@@ -1,0 +1,5 @@
+﻿Variable,Explanation
+SERIALNO,serial number of each house
+TEN,tenure (owned/rented?)
+ADJINC,adjusted household income
+NP,number of people in house

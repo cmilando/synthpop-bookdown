@@ -2,9 +2,106 @@
 
 Overview of this is as in the README file, roughly as follows:
 
-## ACS constraint tables
+## Geographic area 
 
-## PUMS data
+There are 21 cities and towns included in the Mystic River Watershed area: 
+
+1. Burlington 
+2. Lexington 
+3. Belmont 
+4. Watertown 
+5. Arlington 
+6. Winchester 
+7. Woburn 
+8. Reading 
+9. Stoneham 
+10. Medford 
+11. Somerville 
+12. Cambridge 
+13. Boston (East Boston, Charlestown) 
+14. Everett 
+15. Malden 
+16. Melrose 
+17. Wakefield 
+18. Chelsea 
+19. Revere 
+20. Winthrop 
+21. Wilmington 
+
+
+## ACS constraint tables 
+
+ACS 5-year (2021) detailed estimates tables for Massachusetts census tracts were obtained. 
+
+Race/Ethnicity: 
+
+  - B04006 [People Reporting Ancestry](https://data.census.gov/table?q=B0400&g=040XX00US25&tid=ACSDT1Y2021.B04006) 
+    - Collapsed by town/city: all ancestry groups with more than 1% of the population represented are retained, those with less than 1% are collapsed to 'other'
+  - B03001 [Hispanic or Latino by Specific Origin](https://data.census.gov/table?q=B03001&g=040XX00US25,25$1400000) 
+  
+Sex and Age: 
+
+  - B01001 [Sex by Age](https://data.census.gov/table?q=B01001&g=040XX00US25,25$1400000) 
+  
+```{r nice-tab, echo=FALSE, tidy=FALSE}
+library(readxl)
+B01001 <- read_excel("acs_variables.xlsx", sheet = "B01001")
+
+knitr::kable(
+ B01001, 
+ caption = 'B01001 Variables',
+ booktabs = TRUE
+)
+```
+  
+Education: 
+
+  - B15001 [Sex by educational attainment for the population 18 years and over](https://data.census.gov/table?q=B15001&g=040XX00US25,25$1400000) 
+  
+```{r nice-tab, echo=FALSE, tidy=FALSE}
+library(readxl)
+B15001 <- read_excel("acs_variables.xlsx", sheet = "B15001")
+
+knitr::kable(
+ B15001, 
+ caption = 'B15001 Variables',
+ booktabs = TRUE
+)
+```
+
+Householder Age and Household Income: 
+
+  - B19307 [Age of householder by household income in the past 12 months (2021 inflation-adjusted dollars)](https://data.census.gov/table?q=B19037&g=040XX00US25,25$1400000) 
+  
+Householder Age and Tenure: 
+
+  - B25007 [Tenure by Age of Householder](https://data.census.gov/table?q=B25007&g=040XX00US25,25$1400000) 
+  
+
+
+
+## PUMS data 
+
+ACS 5-year (2017-2021) Public Use Microdata Sample (PUMS) files for *person* data and for *household* data. These data sample approximately 5% of individual responses to the ACS. Full documentation on this data is provided in the [PUMS User Guide](https://www2.census.gov/programs-surveys/acs/tech_docs/pums/2017_2021ACS_PUMS_User_Guide.pdf).
+
+We have downloaded the PUMS data at the highest spatial resolution available: PUMA (Public Use Microdata Area), geographic units developed in the Decennial Census (here, 2010) of approximately 100,000 people per PUMA. 
+
+```{r nice-tab, echo=FALSE, tidy=FALSE}
+library(readr)
+person <- read_csv("PUMA_p_variables.csv")
+hhold <- read_csv("PUMA_h_variables.csv")
+
+knitr::kable(
+ person, 
+ caption = 'Relevant PUMS Person Variables',
+ booktabs = TRUE
+)
+knitr::kable(
+ hhold, 
+ caption = 'Relevant PUMS Household Variables',
+ booktabs = TRUE
+)
+```
 
 ## Bring into the CO model
 
