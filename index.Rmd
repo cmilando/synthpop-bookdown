@@ -16,3 +16,80 @@ description: "This book describes the process and applications of using the CO m
 
 Here we will describe the overall purpose of the project, with some links.
 and probably embed and image or two.
+```{r include=FALSE}
+library(tigris)
+library(leaflet) #https://rstudio.github.io/leaflet/basemaps.html
+library(sf)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+
+MA_pumas <- pumas(state = "MA", year = 2021)
+pumas <- c("00503","00505","02800","01000","00508","00507","00506","03302",
+           "00505","03302","03306","01300")
+MA_pumas_mywra <- subset(MA_pumas, MA_pumas$PUMACE10 %in% pumas)
+MA_tracts <- tracts(state = "MA", year = 2021)
+intersect_sgbp <- st_intersects(MA_tracts, MA_pumas_mywra) #following method found: https://bookdown.org/robinlovelace/geocompr/spatial-operations.html
+sel_logical = lengths(intersect_sgbp) > 0
+MA_tracts_mywra = MA_tracts[sel_logical, ]
+
+map_1 <- leaflet() %>%
+  setView(lat = 42.48, lng = -71.09, zoom = 10) %>%
+  addProviderTiles(
+    providers$Esri.WorldTopoMap,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Topographic") %>%
+   addProviderTiles(
+    providers$Esri.WorldGrayCanvas,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Gray Canvas") %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Imagery") %>%
+  addPolygons(
+    data = MA_tracts_mywra,
+    # set the color of the polygon
+    color = "orange",
+    # set the opacity of the outline
+    opacity = 1,
+    # set the stroke width in pixels
+    weight = 0.5,
+    # set the fill opacity
+    fillOpacity = 0.08,
+    group = "Census Tracts"
+  ) %>%
+  addPolygons(
+    data = MA_pumas_mywra,
+    # set the color of outlines
+    color = "blue",
+    # set the opacity of the outline
+    opacity = 1,
+    # set the stroke width in pixels
+    weight = 1.4,
+    dashArray = "2",
+    fillOpacity = 0,
+    group = "Public Use Microdata Areas",
+    popup = ~NAMELSAD10
+
+  ) %>%
+  # Layers control
+  addLayersControl(
+    baseGroups = c("ESRI World Topographic",
+                   "ESRI World Gray Canvas",
+                   "ESRI World Imagery"),
+    overlayGroups = c("Public Use Microdata Areas","Census Tracts"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+# side note... look how beautiful this is: -->
+# leaflet() %>% 
+# setView(lat = 42.40, lng = -71.09713377834885, zoom = 10) %>% 
+# addProviderTiles(providers$Stamen.Watercolor) 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+map_1
+```
+
+

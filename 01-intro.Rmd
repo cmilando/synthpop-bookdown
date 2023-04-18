@@ -1,7 +1,7 @@
 # Introduction {#intro}
 
 ## Synthetic population literature
-```{r, include=FALSE}
+```{r, echo=FALSE}
 # talk about the other papers we've done with synthetic population. 
 # mirror the manuscript that is eventually created,
 # more general audience
