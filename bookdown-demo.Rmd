@@ -68,7 +68,7 @@ map_1 <- leaflet() %>%
     stroke = T,
     color = "black",
     fill = T,
-    fillColor = ~tractpal(MA_pumas_mywra$NAMESLSAD10),
+    fillColor = ~pumapal(NAMESLSAD10),
     fillOpacity = 0.01,
     # set the opacity of the outline
     # set the stroke width in pixels
@@ -97,4 +97,66 @@ map_1 <- leaflet() %>%
 map_1
 ```
 
+
+
+<!--chapter:end:index.Rmd-->
+
+
+# Introduction {#intro}
+
+Placeholder
+
+
+## Synthetic population literature
+
+<!--chapter:end:01-intro.Rmd-->
+
+
+# Literature
+
+Placeholder
+
+
+
+<!--chapter:end:02-literature.Rmd-->
+
+
+# Methods
+
+Placeholder
+
+
+## Geographic area 
+## ACS constraint tables 
+## PUMS data 
+## Bring into the CO model
+### Phase 1: with replacement
+### Phase 2: without replacement
+## Exporting from the CO model
+## bookdown boiler plate
+## math example
+
+<!--chapter:end:03-method.Rmd-->
+
+# Applications
+
+Some _significant_ applications are demonstrated in this chapter.
+
+## Flooding
+
+## Something else
+
+<!--chapter:end:04-application.Rmd-->
+
+# Final Words
+
+We have finished a nice book.
+
+<!--chapter:end:05-summary.Rmd-->
+
+`r if (knitr:::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:06-references.Rmd-->
 
