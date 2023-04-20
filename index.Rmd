@@ -51,24 +51,24 @@ map_1 <- leaflet() %>%
     providers$Esri.WorldImagery,
     options = providerTileOptions(opacity = 0.75),
     group = "ESRI World Imagery") %>%
-  # addPolygons(
-  #   data = MA_tracts_mywra,
-  #   # set the color of the polygon
-  #   fill = FALSE,
-  #   stroke = TRUE,
-  #   color = "black",
-  #   opacity = 0,
-  #   weight = 0.5,
-  #   group = "Census Tracts",
-  #   popup = ~TRACTCE
-  # ) %>%
+  addPolygons(
+    data = MA_tracts_mywra,
+    # set the color of the polygon
+    fill = FALSE,
+    stroke = TRUE,
+    color = "red",
+    opacity = 0.5,
+    weight = 0.5,
+    group = "Census Tracts",
+    popup = ~TRACTCE
+  ) %>%
   addPolygons(
     data = MA_pumas_mywra,
     # set the color of outlines
     stroke = T,
     color = "black",
     fill = T,
-    fillColor = ~tractpal(MA_pumas_mywra$NAMESLSAD10),
+    fillColor = ~pumapal(MA_pumas_mywra$NAMESLSAD10),
     fillOpacity = 0.01,
     # set the opacity of the outline
     # set the stroke width in pixels
