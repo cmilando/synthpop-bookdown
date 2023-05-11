@@ -20,23 +20,35 @@ and probably embed and image or two.
 library(tigris)
 library(leaflet) #https://rstudio.github.io/leaflet/basemaps.html
 library(sf)
+library(dplyr)
+library(utils)
+library(readr)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 
 MA_pumas <- pumas(state = "MA", year = 2021)
-pumas <- c("00503","00505","02800","01000","00508","00507","00506","03302",
-           "00505","03302","03306","01300")
+pumas <- c("00503","00505","02800","01000","00508","00507","00506","03302","00505","03302","03306","01300")
 MA_pumas_mywra <- subset(MA_pumas, MA_pumas$PUMACE10 %in% pumas)
 MA_tracts <- tracts(state = "MA", year = 2021)
-intersect_sgbp <- st_intersects(MA_tracts, MA_pumas_mywra) #following method found: https://bookdown.org/robinlovelace/geocompr/spatial-operations.html
-sel_logical = lengths(intersect_sgbp) > 0
-MA_tracts_mywra = MA_tracts[sel_logical, ]
-exclude<-c("367200","367100","366201","365100","361100","361300","362100","317103","317102","312300","312502","314301","314302","252102","252101","251400","251500","251800","251700","253202","253204","212102","212101","214100","216100","217102","217201","217202","204600","204702","204701","205100","205300","205400","205600","205700","207200","990101","060604","061204","061203","061202","080100","080401","080601","010405","010404","010403","010206","010104","981501","373100","373200","373300","374500","374600","374700","205800","080500","312501")
-MA_tracts_mywra <- MA_tracts_mywra[!(MA_tracts_mywra$TRACTCE %in% exclude),]
-pumapal <- colorFactor(palette = 
-                          c('beige', 'blue', 'cadetblue', 'darkgreen',  'purple4', 'darkred',  'lightblue', 'lightgray', 'lightgreen', 'orange','red'), domain = NULL)
+
+#Spatial join by tract centroids
+centroids_tracts <- st_centroid(MA_tracts)
+join_PUMA_centroids <- st_join(centroids_tracts, MA_pumas_mywra)
+join_PUMA_centroids<- join_PUMA_centroids[!is.na(join_PUMA_centroids$STATEFP10),]
+# Now, make a dictionary 
+PUMA_tracts <- as.data.frame(cbind(join_PUMA_centroids$TRACTCE,
+                                join_PUMA_centroids$PUMACE10))
+PUMA_tracts <- rename(PUMA_tracts, TRACTCE = V1) 
+PUMA_tracts <- rename(PUMA_tracts, PUMACE10 = V2) 
+unique(PUMA_tracts$PUMACE10)
+    # Save this dictionary
+write_csv(PUMA_tracts, "pumas_and_ctracts.csv")
+
+# Join dictionary to tracts file
+MA_tracts_mywra <- right_join(MA_tracts, PUMA_tracts, by = "TRACTCE")
+
 map_1 <- leaflet() %>%
   setView(lat = 42.48, lng = -71.09, zoom = 10) %>%
   addProviderTiles(
@@ -62,35 +74,36 @@ map_1 <- leaflet() %>%
     group = "Census Tracts",
     popup = ~TRACTCE
   ) %>%
-  addPolygons(
+    addPolygons(
     data = MA_pumas_mywra,
     # set the color of outlines
     stroke = T,
     color = "black",
-    fill = T,
-    fillColor = ~pumapal(MA_pumas_mywra$NAMESLSAD10),
-    fillOpacity = 0.01,
+    fill = F,
     # set the opacity of the outline
     # set the stroke width in pixels
     weight = 1.4,
-    dashArray = "2",
-    
     group = "Public Use Microdata Areas",
     popup = ~NAMELSAD10
-
-  ) %>%
+   ) %>%
   # Layers control
   addLayersControl(
     baseGroups = c("ESRI World Topographic",
                    "ESRI World Gray Canvas",
                    "ESRI World Imagery"),
-    overlayGroups = c("Public Use Microdata Areas","Census Tracts"),
+    overlayGroups = c("Public Use Microdata Areas",
+                      "Census Tracts"
+                      ),
     options = layersControlOptions(collapsed = FALSE)
   )
+
+
+
+
 # side note... look how beautiful this is: -->
-# leaflet() %>% 
-# setView(lat = 42.40, lng = -71.09713377834885, zoom = 10) %>% 
-# addProviderTiles(providers$Stamen.Watercolor) 
+# leaflet() %>%
+# setView(lat = 42.40, lng = -71.09713377834885, zoom = 10) %>%
+# addProviderTiles(providers$Stamen.Watercolor)
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}

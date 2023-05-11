@@ -23,7 +23,7 @@
 <meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2023-04-11" />
+<meta name="date" content="2023-05-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -121,7 +121,30 @@
             <section class="normal" id="section-">
 <div id="methods" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Methods<a href="methods.html#methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Overview of this is as in the README file, roughly as follows:</p>
+<p>To generate synthetic populations for each Public Use Microdata Area (PUMA)
+contained within the Mystic River Watershed area, we used a combination of
+coding languages (R version 4.2.2 (2022-10-31) and Fortran) and a combination of datasets used to generate
+PUMA-specific constraint tables. Note that the geographic resolution used for these
+methods is the census tract level.</p>
+<p>Obtaining the datasets required:</p>
+<ol style="list-style-type: decimal">
+<li>Creating lists of census tracts located in each of the 10 PUMAs using R</li>
+<li>Pulling ACS census tract data for each of the 10 PUMA sets of census tracts using R</li>
+<li>Pulling the Public Use Microdata Samples for each PUMA, including person and household variables</li>
+</ol>
+<p>The datasets are then cleaned:</p>
+<ol style="list-style-type: decimal">
+<li>ACS dataset are cleaned and combined in R (with separate runs for each PUMA)</li>
+<li>PUMS data is cleaned and combined in R (with separate runs for each PUMA)</li>
+</ol>
+<p>N.B. (1) and (2) above generate output textfiles which can then be read into and implemented in the CO model, which is written in Fortran.</p>
+<p>Update a few additional tables:</p>
+<ol style="list-style-type: decimal">
+<li>Constraining tables information textfile. This file is also an output file with parameters used to reflect different ancestry bins by PUMA (NOTE: FJBI still confused by this).</li>
+<li>Control parameters file with PUMA name, number of constraint cells for that PUMA, and row below (number of constraint cells x 10).</li>
+</ol>
+<p>Run with CO_BU, the executable created by compiling Fortran code.</p>
+<p>Read the resulting output from the CO work using R.</p>
 <div id="geographic-area" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Geographic area<a href="methods.html#geographic-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are 21 cities and towns included in the Mystic River Watershed area:</p>
@@ -164,10 +187,69 @@
 <ul>
 <li>B01001 <a href="https://data.census.gov/table?q=B01001&amp;g=040XX00US25,25$1400000">Sex by Age</a></li>
 </ul>
+<table>
+<caption><span id="tab:nice-tab">Table 4.1: </span>B01001 Variables</caption>
+<thead>
+<tr class="header">
+<th align="left">Age Categories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">&lt;18</td>
+</tr>
+<tr class="even">
+<td align="left">18-24</td>
+</tr>
+<tr class="odd">
+<td align="left">25-34</td>
+</tr>
+<tr class="even">
+<td align="left">45-64</td>
+</tr>
+<tr class="odd">
+<td align="left">65+</td>
+</tr>
+</tbody>
+</table>
 <p>Education:</p>
 <ul>
 <li>B15001 <a href="https://data.census.gov/table?q=B15001&amp;g=040XX00US25,25$1400000">Sex by educational attainment for the population 18 years and over</a></li>
 </ul>
+<table>
+<caption><span id="tab:nice-tab2">Table 4.2: </span>B15001 Variables</caption>
+<thead>
+<tr class="header">
+<th align="left">Education Categories</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Below 18 years old</td>
+</tr>
+<tr class="even">
+<td align="left">Less than 9th grade</td>
+</tr>
+<tr class="odd">
+<td align="left">9th to 12th grade no diploma</td>
+</tr>
+<tr class="even">
+<td align="left">High school graduate GED or alternative</td>
+</tr>
+<tr class="odd">
+<td align="left">Some college no degree</td>
+</tr>
+<tr class="even">
+<td align="left">Associate degree</td>
+</tr>
+<tr class="odd">
+<td align="left">Bachelor degree</td>
+</tr>
+<tr class="even">
+<td align="left">Graduate or professional degree</td>
+</tr>
+</tbody>
+</table>
 <p>Householder Age and Household Income:</p>
 <ul>
 <li>B19307 <a href="https://data.census.gov/table?q=B19037&amp;g=040XX00US25,25$1400000">Age of householder by household income in the past 12 months (2021 inflation-adjusted dollars)</a></li>
@@ -196,7 +278,7 @@
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <table>
-<caption><span id="tab:nice-tab">Table 4.1: </span>Relevant PUMS Person Variables</caption>
+<caption><span id="tab:nice-tab3">Table 4.3: </span>Relevant PUMS Person Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>
@@ -239,7 +321,7 @@
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab">Table 4.1: </span>Relevant PUMS Household Variables</caption>
+<caption><span id="tab:nice-tab3">Table 4.3: </span>Relevant PUMS Household Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>

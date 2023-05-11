@@ -21,3 +21,5 @@ final-words
 other-papers-on-synthetic-population
 synthetic-population-literature
 geographic-area
+tab:nice-tab2
+tab:nice-tab3

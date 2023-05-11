@@ -1,6 +1,33 @@
 # Methods
 
-Overview of this is as in the README file, roughly as follows:
+To generate synthetic populations for each Public Use Microdata Area (PUMA) 
+contained within the Mystic River Watershed area, we used a combination of 
+coding languages (R version 4.2.2 (2022-10-31) and Fortran) and a combination of datasets used to generate 
+PUMA-specific constraint tables. Note that the geographic resolution used for these
+methods is the census tract level. 
+
+Obtaining the datasets required: 
+
+1. Creating lists of census tracts located in each of the 10 PUMAs using R
+2. Pulling ACS census tract data for each of the 10 PUMA sets of census tracts using R
+3. Pulling the Public Use Microdata Samples for each PUMA, including person and household variables
+
+The datasets are then cleaned: 
+
+1. ACS dataset are cleaned and combined in R (with separate runs for each PUMA)
+2. PUMS data is cleaned and combined in R (with separate runs for each PUMA) 
+
+N.B. (1) and (2) above generate output textfiles which can then be read into and implemented in the CO model, which is written in Fortran.
+
+Update a few additional tables: 
+
+1. Constraining tables information textfile. This file is also an output file with parameters used to reflect different ancestry bins by PUMA (NOTE: FJBI still confused by this).
+2. Control parameters file with PUMA name, number of constraint cells for that PUMA, and row below (number of constraint cells x 10).
+
+Run with CO_BU, the executable created by compiling Fortran code.  
+
+Read the resulting output from the CO work using R. 
+
 
 ## Geographic area 
 
@@ -46,27 +73,16 @@ Sex and Age:
 ```{r nice-tab, echo=FALSE, tidy=FALSE}
 library(readxl)
 B01001 <- read_excel("acs_variables.xlsx", sheet = "B01001")
-
-knitr::kable(
- B01001, 
- caption = 'B01001 Variables',
- booktabs = TRUE
-)
+knitr::kable(B01001, caption = 'B01001 Variables',booktabs = TRUE)
 ```
   
 Education: 
 
   - B15001 [Sex by educational attainment for the population 18 years and over](https://data.census.gov/table?q=B15001&g=040XX00US25,25$1400000) 
   
-```{r nice-tab, echo=FALSE, tidy=FALSE}
-library(readxl)
+```{r nice-tab2, echo=FALSE, tidy=FALSE}
 B15001 <- read_excel("acs_variables.xlsx", sheet = "B15001")
-
-knitr::kable(
- B15001, 
- caption = 'B15001 Variables',
- booktabs = TRUE
-)
+knitr::kable(B15001, caption = 'B15001 Variables',booktabs = TRUE)
 ```
 
 Householder Age and Household Income: 
@@ -86,21 +102,12 @@ ACS 5-year (2017-2021) Public Use Microdata Sample (PUMS) files for *person* dat
 
 We have downloaded the PUMS data at the highest spatial resolution available: PUMA (Public Use Microdata Area), geographic units developed in the Decennial Census (here, 2010) of approximately 100,000 people per PUMA. 
 
-```{r nice-tab, echo=FALSE, tidy=FALSE}
+```{r nice-tab3, echo=FALSE, tidy=FALSE}
 library(readr)
 person <- read_csv("PUMA_p_variables.csv")
 hhold <- read_csv("PUMA_h_variables.csv")
-
-knitr::kable(
- person, 
- caption = 'Relevant PUMS Person Variables',
- booktabs = TRUE
-)
-knitr::kable(
- hhold, 
- caption = 'Relevant PUMS Household Variables',
- booktabs = TRUE
-)
+knitr::kable(person, caption = 'Relevant PUMS Person Variables', booktabs = TRUE)
+knitr::kable(hhold, caption = 'Relevant PUMS Household Variables', booktabs = TRUE)
 ```
 
 ## Bring into the CO model
