@@ -26,30 +26,65 @@ library(readr)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
-
-
+# Plot tract polygons and puma polygons together
 MA_pumas <- pumas(state = "MA", year = 2021)
-pumas <- c("00503","00505","02800","01000","00508","00507","00506","03302","00505","03302","03306","01300")
+pumas <- c("00503",
+           "00505",
+           "02800",
+           "01000",
+           "00508",
+           "00507",
+           "00506",
+           "03302",
+           "00505",
+           "03306",
+           "01300")
 MA_pumas_mywra <- subset(MA_pumas, MA_pumas$PUMACE10 %in% pumas)
 MA_tracts <- tracts(state = "MA", year = 2021)
 
-#Spatial join by tract centroids
-centroids_tracts <- st_centroid(MA_tracts)
-join_PUMA_centroids <- st_join(centroids_tracts, MA_pumas_mywra)
-join_PUMA_centroids<- join_PUMA_centroids[!is.na(join_PUMA_centroids$STATEFP10),]
-# Now, make a dictionary 
-PUMA_tracts <- as.data.frame(cbind(join_PUMA_centroids$TRACTCE,
-                                join_PUMA_centroids$PUMACE10))
-PUMA_tracts <- rename(PUMA_tracts, TRACTCE = V1) 
-PUMA_tracts <- rename(PUMA_tracts, PUMACE10 = V2) 
-unique(PUMA_tracts$PUMACE10)
-    # Save this dictionary
-write_csv(PUMA_tracts, "pumas_and_ctracts.csv")
+my_dir <- "~/Desktop/SUMMER2023/ResearchRotation/synthetic_population_code/ACRESr/mywra_tractsbypuma/"
+PUMA00503 <- read.table(paste0(my_dir,"PUMA00503.txt"))
+PUMA00503 <- unique(substr(PUMA00503$V1, 6,11))
+PUMA00503_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00503)
+  
+PUMA00505 <- read.table(paste0(my_dir,"PUMA00505.txt"))
+PUMA00505 <- unique(substr(PUMA00505$V1, 6,11))
+PUMA00505_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00505)
 
-# Join dictionary to tracts file
-MA_tracts_mywra <- right_join(MA_tracts, PUMA_tracts, by = "TRACTCE")
+PUMA00506 <- read.table(paste0(my_dir,"PUMA00506.txt"))
+PUMA00506 <- unique(substr(PUMA00506$V1, 6,11))
+PUMA00506_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00506)
 
-map_1 <- leaflet() %>%
+PUMA00507 <- read.table(paste0(my_dir,"PUMA00507.txt"))
+PUMA00507 <- unique(substr(PUMA00507$V1, 6,11))
+PUMA00507_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00507)
+
+PUMA00508 <- read.table(paste0(my_dir,"PUMA00508.txt"))
+PUMA00508 <- unique(substr(PUMA00508$V1, 6,11))
+PUMA00508_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00508)
+
+PUMA01000 <- read.table(paste0(my_dir,"PUMA01000.txt"))
+PUMA01000 <- unique(substr(PUMA01000$V1, 6,11))
+PUMA01000_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA01000)
+
+PUMA01300 <- read.table(paste0(my_dir,"PUMA01300.txt"))
+PUMA01300 <- unique(substr(PUMA01300$V1, 6,11))
+PUMA01300_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA01300)
+
+PUMA02800 <- read.table(paste0(my_dir,"PUMA02800.txt"))
+PUMA02800 <- unique(substr(PUMA02800$V1, 6,11))
+PUMA02800_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA02800)
+
+PUMA03302 <- read.table(paste0(my_dir,"PUMA03302.txt"))
+PUMA03302 <- unique(substr(PUMA03302$V1, 6,11))
+PUMA03302_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA03302)
+
+PUMA03306 <- read.table(paste0(my_dir,"PUMA03306.txt"))
+PUMA03306 <- unique(substr(PUMA03306$V1, 6,11))
+PUMA03306_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA03306)
+
+
+map_2 <- leaflet() %>%
   setView(lat = 42.48, lng = -71.09, zoom = 10) %>%
   addProviderTiles(
     providers$Esri.WorldTopoMap,
@@ -63,18 +98,127 @@ map_1 <- leaflet() %>%
     providers$Esri.WorldImagery,
     options = providerTileOptions(opacity = 0.75),
     group = "ESRI World Imagery") %>%
-  addPolygons(
-    data = MA_tracts_mywra,
-    # set the color of the polygon
-    fill = FALSE,
-    stroke = TRUE,
-    color = "red",
-    opacity = 0.5,
-    weight = 0.5,
-    group = "Census Tracts",
-    popup = ~TRACTCE
-  ) %>%
     addPolygons(
+    data = PUMA00503_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "red",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 00503 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA00505_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "blue",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 00505 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA00506_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "orange",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 00506 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA00507_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "darkgreen",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 00507 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA00508_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "magenta",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 00508 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA01000_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "purple",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 01000 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA01300_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "goldenrod",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 01300 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA02800_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "tan",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 02800 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA03302_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "pink",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 03302 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+  addPolygons(
+    data = PUMA03306_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "maroon",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "PUMA 03306 Census Tracts",
+    popup = ~TRACTCE
+   ) %>%
+   addPolygons(
     data = MA_pumas_mywra,
     # set the color of outlines
     stroke = T,
@@ -83,22 +227,28 @@ map_1 <- leaflet() %>%
     # set the opacity of the outline
     # set the stroke width in pixels
     weight = 1.4,
-    group = "Public Use Microdata Areas",
+    group = "All Public Use Microdata Areas",
     popup = ~NAMELSAD10
-   ) %>%
+   )%>%
   # Layers control
   addLayersControl(
     baseGroups = c("ESRI World Topographic",
                    "ESRI World Gray Canvas",
                    "ESRI World Imagery"),
-    overlayGroups = c("Public Use Microdata Areas",
-                      "Census Tracts"
-                      ),
+    overlayGroups = c("All Public Use Microdata Areas",
+      "PUMA 00503 Census Tracts",
+           "PUMA 00505 Census Tracts",
+           "PUMA 02800 Census Tracts",
+           "PUMA 01000 Census Tracts",
+           "PUMA 00508 Census Tracts",
+           "PUMA 00507 Census Tracts",
+           "PUMA 00506 Census Tracts",
+           "PUMA 03302 Census Tracts",
+           "PUMA 00505 Census Tracts",
+           "PUMA 03306 Census Tracts",
+           "PUMA 01300 Census Tracts"),
     options = layersControlOptions(collapsed = FALSE)
   )
-
-
-
 
 # side note... look how beautiful this is: -->
 # leaflet() %>%
@@ -107,7 +257,7 @@ map_1 <- leaflet() %>%
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
-map_1
+map_2
 ```
 
 

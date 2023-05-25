@@ -23,7 +23,7 @@
 <meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2023-05-11" />
+<meta name="date" content="2023-05-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,7 +81,14 @@
 <li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#geographic-area"><i class="fa fa-check"></i><b>4.1</b> Geographic area</a></li>
-<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#acs-constraint-tables"><i class="fa fa-check"></i><b>4.2</b> ACS constraint tables</a></li>
+<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#acs-constraint-tables"><i class="fa fa-check"></i><b>4.2</b> ACS constraint tables</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="methods.html"><a href="methods.html#raceethnicity"><i class="fa fa-check"></i><b>4.2.1</b> Race/Ethnicity</a></li>
+<li class="chapter" data-level="4.2.2" data-path="methods.html"><a href="methods.html#sex-and-age"><i class="fa fa-check"></i><b>4.2.2</b> Sex and Age</a></li>
+<li class="chapter" data-level="4.2.3" data-path="methods.html"><a href="methods.html#education"><i class="fa fa-check"></i><b>4.2.3</b> Education</a></li>
+<li class="chapter" data-level="4.2.4" data-path="methods.html"><a href="methods.html#householder-age-and-household-income"><i class="fa fa-check"></i><b>4.2.4</b> Householder Age and Household Income</a></li>
+<li class="chapter" data-level="4.2.5" data-path="methods.html"><a href="methods.html#householder-age-and-tenure"><i class="fa fa-check"></i><b>4.2.5</b> Householder Age and Tenure</a></li>
+</ul></li>
 <li class="chapter" data-level="4.3" data-path="methods.html"><a href="methods.html#pums-data"><i class="fa fa-check"></i><b>4.3</b> PUMS data</a></li>
 <li class="chapter" data-level="4.4" data-path="methods.html"><a href="methods.html#bring-into-the-co-model"><i class="fa fa-check"></i><b>4.4</b> Bring into the CO model</a>
 <ul>
@@ -89,8 +96,6 @@
 <li class="chapter" data-level="4.4.2" data-path="methods.html"><a href="methods.html#phase-2-without-replacement"><i class="fa fa-check"></i><b>4.4.2</b> Phase 2: without replacement</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="methods.html"><a href="methods.html#exporting-from-the-co-model"><i class="fa fa-check"></i><b>4.5</b> Exporting from the CO model</a></li>
-<li class="chapter" data-level="4.6" data-path="methods.html"><a href="methods.html#bookdown-boiler-plate"><i class="fa fa-check"></i><b>4.6</b> bookdown boiler plate</a></li>
-<li class="chapter" data-level="4.7" data-path="methods.html"><a href="methods.html#math-example"><i class="fa fa-check"></i><b>4.7</b> math example</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
 <ul>
@@ -126,6 +131,12 @@ contained within the Mystic River Watershed area, we used a combination of
 coding languages (R version 4.2.2 (2022-10-31) and Fortran) and a combination of datasets used to generate
 PUMA-specific constraint tables. Note that the geographic resolution used for these
 methods is the census tract level.</p>
+<div class="figure"><span style="display:block;" id="fig:methods-image"></span>
+<img src="images/methods-image.png" alt="Using PUMA and ACS to Generate a Synthetic Population" width="700" />
+<p class="caption">
+Figure 4.1: Using PUMA and ACS to Generate a Synthetic Population
+</p>
+</div>
 <p>Obtaining the datasets required:</p>
 <ol style="list-style-type: decimal">
 <li>Creating lists of census tracts located in each of the 10 PUMAs using R</li>
@@ -175,7 +186,8 @@ methods is the census tract level.</p>
 <div id="acs-constraint-tables" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> ACS constraint tables<a href="methods.html#acs-constraint-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>ACS 5-year (2021) detailed estimates tables for Massachusetts census tracts were obtained.</p>
-<p>Race/Ethnicity:</p>
+<div id="raceethnicity" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Race/Ethnicity<a href="methods.html#raceethnicity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B04006 <a href="https://data.census.gov/table?q=B0400&amp;g=040XX00US25&amp;tid=ACSDT1Y2021.B04006">People Reporting Ancestry</a>
 <ul>
@@ -183,12 +195,88 @@ methods is the census tract level.</p>
 </ul></li>
 <li>B03001 <a href="https://data.census.gov/table?q=B03001&amp;g=040XX00US25,25$1400000">Hispanic or Latino by Specific Origin</a></li>
 </ul>
-<p>Sex and Age:</p>
+<p>Note that ACS 5-year (2021) detailed estimates tables include People Reporting Single Ancestry, People Reporting Multiple Ancestry, and a combined table of both - People Reporting Ancestry (B04006, used here). In order to approximate the first-ancestry reported, as this is the ancestry included in the PUMS (see section below), we did some re-weighting of the B04006 table variables. In brief, this method was as follows:</p>
+<p>For a given PUMA (Public Use Microdata Area) in the set of 10 included PUMAs, and for each census tract within that PUMA, we re-weight all ancestry variables by proceeding across columns.</p>
+<p>If true total <span class="math inline">\(= total_{true}\)</span> and total with multiple ancestries <span class="math inline">\(= total_{obs}\)</span>, and observed population in a given ancestry column for that row <span class="math inline">\(= Z_{obs}\)</span>, then the re-weighted <span class="math inline">\(Z_{rw}\)</span> is</p>
+<p><span class="math display">\[
+  Z_{rw} = \frac{Z}{\frac{total_{true}}{total_{obs}}}
+  \]</span>
+To round to whole units of persons, we use a probabilistic coin-toss methodology:</p>
+<p>Let the probability of rounding up be <span class="math inline">\(mod(Z_{rw},1)\)</span>.</p>
+<p>Using the ‘set.seed()’ function in R, generate a random number, <span class="math inline">\(P\)</span>, between 0 and 1.</p>
+<p>Then, the rounded number is:</p>
+<p><span class="math display">\[
+  Z_{rw-integer} = Z_{rw}-mod(Z_{rw},1)+P.
+  \]</span>
+This is helpful, except when the new total, <span class="math inline">\(total_{new}\)</span> no longer equals <span class="math inline">\(total_{true}\)</span>.To amend this, we apply a ‘fudge factor’:
+Rank all ancestry columns based on <span class="math inline">\(Z_{rw_integer}\)</span>. Based on the difference between <span class="math inline">\(total_{true}\)</span> and <span class="math inline">\(total_{new}\)</span>, we adjust the data as needed:</p>
+<p>If <span class="math inline">\(total_{new}-total_{true} = 0\)</span>, then do nothing.</p>
+<p>If <span class="math inline">\(total_{new}-total_{true} = total_{diff} &gt; 0\)</span>, remove 1 from each of the top <span class="math inline">\(n = total_{diff}\)</span> ranked ancestries.<br />
+If <span class="math inline">\(total_{new}-total_{true} = total_{diff} &lt; 0\)</span>, add 1 to each of the top <span class="math inline">\(n = total_{diff}\)</span> ranked ancestries.</p>
+<p>We keep ancestry variables where the proportion of the PUMA of that background equals or exceeds 1%. This means different ancestry variables were included for different PUMAs. The following table provides the list of included ancestries by PUMA.</p>
+<table>
+<caption><span id="tab:nice-tab0">Table 4.1: </span>B04006 and B03001 Variables by PUMA</caption>
+<colgroup>
+<col width="0%" />
+<col width="99%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">PUMA</th>
+<th align="left">Ancestry Variables Included</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">00503</td>
+<td align="left">American, Armenian, English, European, French except Basque , French Canadian, German, Greek, Irish, Italian, Polish, Russian, Scottish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Uruguayan, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="even">
+<td align="left">00505</td>
+<td align="left">American, Armenian, Eastern European, English, European, French except Basque , French Canadian, German, Greek, Irish, Italian, Polish, Russian, Scottish, Swedish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Uruguayan, South American: Venezuelan, South American: Other South American, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="odd">
+<td align="left">00506</td>
+<td align="left">American, British, Eastern European, English, European, French except Basque , German, Irish, Italian, Polish, Portuguese, Russian, Scottish, Subsaharan African: Ethiopian, Swedish, West Indian except Hispanic groups: Haitian, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, Central American: Other Central American, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Uruguayan, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="even">
+<td align="left">00507</td>
+<td align="left">American, Brazilian, English, European, French except Basque , French Canadian, German, Irish, Italian, Polish, Portuguese, Russian, West Indian except Hispanic groups: Haitian, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Panamanian, Central American: Salvadoran, Central American: Other Central American, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Paraguayan, South American: Peruvian, South American: Venezuelan, South American: Other South American, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="odd">
+<td align="left">00508</td>
+<td align="left">American, Brazilian, English, French except Basque , French Canadian, German, Irish, Italian, Polish, Portuguese, Russian, Scottish, West Indian except Hispanic groups: Haitian, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="even">
+<td align="left">01000</td>
+<td align="left">American, English, French except Basque , French Canadian, German, Greek, Irish, Italian, Polish, Portuguese, Russian, Scottish, Swedish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="odd">
+<td align="left">01300</td>
+<td align="left">American, English, French except Basque , French Canadian, German, Greek, Irish, Italian, Polish, Portuguese, Scottish, Swedish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Paraguayan, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="even">
+<td align="left">02800</td>
+<td align="left">American, English, French except Basque , French Canadian, German, Greek, Irish, Italian, Polish, Portuguese, Scottish, Swedish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, South American: Argentinean, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="odd">
+<td align="left">03302</td>
+<td align="left">American, English, European, French except Basque , French Canadian, German, Irish, Italian, Polish, Russian, Scottish, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Salvadoran, Central American: Other Central American, South American: Argentinean, South American: Bolivian, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+<tr class="even">
+<td align="left">03306</td>
+<td align="left">American, Arab: Moroccan, Brazilian, English, German, Irish, Italian, Polish, Portuguese, Unclassified or not reported, Puerto Rican, Cuban, Dominican: Dominican Republic, Central American: Costa Rican, Central American: Guatemalan, Central American: Honduran, Central American: Nicaraguan, Central American: Panamanian, Central American: Salvadoran, Central American: Other Central American, South American: Argentinean, South American: Bolivian, South American: Chilean, South American: Colombian, South American: Ecuadorian, South American: Peruvian, South American: Venezuelan, Other Hispanic or Latino, other</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sex-and-age" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Sex and Age<a href="methods.html#sex-and-age" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B01001 <a href="https://data.census.gov/table?q=B01001&amp;g=040XX00US25,25$1400000">Sex by Age</a></li>
 </ul>
 <table>
-<caption><span id="tab:nice-tab">Table 4.1: </span>B01001 Variables</caption>
+<caption><span id="tab:nice-tab1">Table 4.2: </span>B01001 Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Age Categories</th>
@@ -212,12 +300,14 @@ methods is the census tract level.</p>
 </tr>
 </tbody>
 </table>
-<p>Education:</p>
+</div>
+<div id="education" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Education<a href="methods.html#education" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B15001 <a href="https://data.census.gov/table?q=B15001&amp;g=040XX00US25,25$1400000">Sex by educational attainment for the population 18 years and over</a></li>
 </ul>
 <table>
-<caption><span id="tab:nice-tab2">Table 4.2: </span>B15001 Variables</caption>
+<caption><span id="tab:nice-tab2">Table 4.3: </span>B15001 Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Education Categories</th>
@@ -250,14 +340,19 @@ methods is the census tract level.</p>
 </tr>
 </tbody>
 </table>
-<p>Householder Age and Household Income:</p>
+</div>
+<div id="householder-age-and-household-income" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Householder Age and Household Income<a href="methods.html#householder-age-and-household-income" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B19307 <a href="https://data.census.gov/table?q=B19037&amp;g=040XX00US25,25$1400000">Age of householder by household income in the past 12 months (2021 inflation-adjusted dollars)</a></li>
 </ul>
-<p>Householder Age and Tenure:</p>
+</div>
+<div id="householder-age-and-tenure" class="section level3 hasAnchor" number="4.2.5">
+<h3><span class="header-section-number">4.2.5</span> Householder Age and Tenure<a href="methods.html#householder-age-and-tenure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B25007 <a href="https://data.census.gov/table?q=B25007&amp;g=040XX00US25,25$1400000">Tenure by Age of Householder</a></li>
 </ul>
+</div>
 </div>
 <div id="pums-data" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> PUMS data<a href="methods.html#pums-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -278,7 +373,7 @@ methods is the census tract level.</p>
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <table>
-<caption><span id="tab:nice-tab3">Table 4.3: </span>Relevant PUMS Person Variables</caption>
+<caption><span id="tab:nice-tab3">Table 4.4: </span>Relevant PUMS Person Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>
@@ -321,7 +416,7 @@ methods is the census tract level.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab3">Table 4.3: </span>Relevant PUMS Household Variables</caption>
+<caption><span id="tab:nice-tab3">Table 4.4: </span>Relevant PUMS Household Variables</caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>
@@ -361,31 +456,8 @@ methods is the census tract level.</p>
 </div>
 <div id="exporting-from-the-co-model" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> Exporting from the CO model<a href="methods.html#exporting-from-the-co-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="bookdown-boiler-plate" class="section level2 hasAnchor" number="4.6">
-<h2><span class="header-section-number">4.6</span> bookdown boiler plate<a href="methods.html#bookdown-boiler-plate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Math can be added in body using usual syntax like this</p>
-</div>
-<div id="math-example" class="section level2 hasAnchor" number="4.7">
-<h2><span class="header-section-number">4.7</span> math example<a href="methods.html#math-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span></p>
-<p>You can also use math in footnotes like this<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<p>We will approximate standard error to 0.027<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="methods.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span><a href="methods.html#fnref2" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 

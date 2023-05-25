@@ -23,3 +23,11 @@ synthetic-population-literature
 geographic-area
 tab:nice-tab2
 tab:nice-tab3
+raceethnicity
+sex-and-age
+education
+householder-age-and-household-income
+householder-age-and-tenure
+tab:nice-tab1
+tab:nice-tab0
+fig:methods-image
