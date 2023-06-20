@@ -42,3 +42,11 @@ The [synthpop](https://www.jstatsoft.org/article/view/v074i11) R package was pub
       - logistic regression
       - (ordered/not) polytomous logistic regression
       - predictive mean matching)
+      
+**simPop R**
+
+> **Simulation of Synthetic Complex Data: The R Package simPop (Templ, Meindl, Kowarik & Dupriez, 2017)** 
+
+The [simPop](https://cran.r-project.org/web/packages/simPop/index.html) R package was published in 2022 and is described in [@Templ2017]. 
+
+
