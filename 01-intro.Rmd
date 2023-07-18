@@ -1,6 +1,24 @@
 # Introduction {#intro}
 
-## Synthetic population literature
+## Project Objectives 
+
+**Overall: to develop a highly spatially-resolved synthetic population for application in epidemiological research in 10 Public Use Microdata Areas (first by census tract, then, by parcel).** 
+
+> **1. Use and expand R code from [@milando_2021] to pull and prepare datasets from the American Community Survey (5-year detailed estimates tables) and Public Use Microdata Samples (both from the [United States Census Bureau](https://data.census.gov/)).**
+
+> **2. Adapt Fortran code from [@milando_2021] to run on the Mac M1 chip. Use code to build the combinatorial optimization executable (hereafter referred to as *CO_BU*).**
+
+> **3. Run CO_BU with the inputs from R code constraint tables, and read the resulting estimates, weight, and estimate_fit data from the CO_BU outputs in R.**
+
+>**4. Develop comprehensive documentation of efforts using rBookdown (see document you are currently viewing!).**
+
+>**5. Build an R package that interacts with Fortran and allows others to repeat this process with PUMAs across the United States (this is a bit ambitious).**
+
+>**6. Produce a paper on the methods and provide a case study as an example of the application of this work.**
+
+
+
+## Previous work from BUSPH
 ```{r, echo=FALSE}
 # talk about the other papers we've done with synthetic population. 
 # mirror the manuscript that is eventually created,
@@ -73,26 +91,4 @@ Key limitations:
   - Challenge of assigning exposure directly rather than estimating via proxy variables
 
 
-```{r, include=FALSE} 
-#Hiding this section, these are some examples for including tables and plots
-## Bookdown boiler plate notes
-# You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
-# 
-# Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
 
-#```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-#par(mar = c(4, 4, .1, .1))
-#plot(pressure, type = 'b', pch = 19)
-#```
-
-# Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
-
-#```{r nice-tab, tidy=FALSE}
-#knitr::kable(
-#  head(iris, 20), caption = 'Here is a nice table!',
-#  booktabs = TRUE
-#)
-#```
-
-# You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015]. Checking citations [@basra_community-engaged_2017].
-```

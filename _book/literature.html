@@ -23,7 +23,7 @@
 <meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2023-05-25" />
+<meta name="date" content="2023-07-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -97,9 +97,16 @@ div.csl-indent {
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
 <li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#synthetic-population-literature"><i class="fa fa-check"></i><b>2.1</b> Synthetic population literature</a></li>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#project-objectives"><i class="fa fa-check"></i><b>2.1</b> Project Objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#previous-work-from-busph"><i class="fa fa-check"></i><b>2.2</b> Previous work from BUSPH</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
+<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="literature.html"><a href="literature.html#popgen"><i class="fa fa-check"></i><b>3.1</b> PopGen</a></li>
+<li class="chapter" data-level="3.2" data-path="literature.html"><a href="literature.html#popsynwin"><i class="fa fa-check"></i><b>3.2</b> PopSynWin</a></li>
+<li class="chapter" data-level="3.3" data-path="literature.html"><a href="literature.html#synthpop-r"><i class="fa fa-check"></i><b>3.3</b> synthpop R</a></li>
+<li class="chapter" data-level="3.4" data-path="literature.html"><a href="literature.html#simpop-r"><i class="fa fa-check"></i><b>3.4</b> simPop R</a></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#geographic-area"><i class="fa fa-check"></i><b>4.1</b> Geographic area</a></li>
@@ -149,7 +156,8 @@ div.csl-indent {
 <div id="literature" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Literature<a href="literature.html#literature" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><em>Some literature on approaches to synthetic population generation:</em></p>
-<p><strong>PopGen</strong></p>
+<div id="popgen" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> PopGen<a href="literature.html#popgen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p><strong>Synthetic population generator: PopGen (Mobility Analytics Research Group, 2016)</strong></p>
 </blockquote>
@@ -159,19 +167,23 @@ div.csl-indent {
 <blockquote>
 <p><strong>A methodology to match distributions of both household and person attributes in the generation of synthetic populations (Ye, Konduri, Pendyala, Sana, and Waddell, 2009)</strong></p>
 </blockquote>
-<p>The PopGen software <span class="citation">(<a href="#ref-marg2016" role="doc-biblioref">MARG 2016</a>)</span> was designed by the Mobility Analytics Research Group, with the main team of scientists cited in the second source above <span class="citation">(<a href="#ref-konduri2016" role="doc-biblioref">Konduri et al. 2016</a>)</span>, and was last updated in 2016.</p>
-<p>The methodology was presented at the 8th Annual Meeting of the Transportation Research Board in Washington, D.C., USA and is described in <span class="citation">(<a href="#ref-ye2009" role="doc-biblioref">Ye et al. 2009</a>)</span>.</p>
+<p>The PopGen software <span class="citation">(<a href="#ref-marg2016">MARG 2016</a>)</span> was designed by the Mobility Analytics Research Group, with the main team of scientists cited in the second source above <span class="citation">(<a href="#ref-konduri2016">Konduri et al. 2016</a>)</span>, and was last updated in 2016.</p>
+<p>The methodology was presented at the 8th Annual Meeting of the Transportation Research Board in Washington, D.C., USA and is described in <span class="citation">(<a href="#ref-ye2009">Ye et al. 2009</a>)</span>.</p>
 <p><em>N.B. Might want more here but methods are mathematically complex; requires further reading.</em></p>
-<p><strong>PopGen v. PopSynWin</strong></p>
+</div>
+<div id="popsynwin" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> PopSynWin<a href="literature.html#popsynwin" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p><strong>Creating a synthetic population: A comparison of tools (Jain, Ronald, and Winter, 2015)</strong></p>
 </blockquote>
-<p>This article was produced for the 3rd Conference of the Transportation Research Group of India by a group of infrastructure engineers at The University of Melbourne, Australia <span class="citation">(<a href="#ref-jain_2015" role="doc-biblioref">Jain, Ronald, and Winter 2015</a>)</span>. The work generates and compares synthetic populations using two software programs: PopSynWin (iterative proportional fitting algorithm) and PopGen (see above, iterative proportional update algorithm). Differences between actual and synthesized population characteristics are presented. Authors concluded that the PopGen software yielded better results, with closer matches of person level characteristic distributions to that of the actual population.</p>
-<p><strong>synthpop R</strong></p>
+<p>This article was produced for the 3rd Conference of the Transportation Research Group of India by a group of infrastructure engineers at The University of Melbourne, Australia <span class="citation">(<a href="#ref-jain_2015">Jain, Ronald, and Winter 2015</a>)</span>. The work generates and compares synthetic populations using two software programs: PopSynWin (iterative proportional fitting algorithm) and PopGen (see above, iterative proportional update algorithm). Differences between actual and synthesized population characteristics are presented. Authors concluded that the PopGen software yielded better results, with closer matches of person level characteristic distributions to that of the actual population.</p>
+</div>
+<div id="synthpop-r" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> synthpop R<a href="literature.html#synthpop-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p><strong>synthpop: Bespoke Creation of Synthetic Data in R (Nowok, Raab, &amp; Dibben, 2016)</strong></p>
 </blockquote>
-<p>The <a href="https://www.jstatsoft.org/article/view/v074i11">synthpop</a> R package was published in 2016 and is described in <span class="citation">(<a href="#ref-nowok2016" role="doc-biblioref">Nowok, Raab, and Dibben 2016</a>)</span> with a step-by-step example.</p>
+<p>The <a href="https://www.jstatsoft.org/article/view/v074i11">synthpop</a> R package was published in 2016 and is described in <span class="citation">(<a href="#ref-nowok2016">Nowok, Raab, and Dibben 2016</a>)</span> with a step-by-step example.</p>
 <ul>
 <li><p>Can choose between several sampling method options to develop synthetic data:</p>
 <ul>
@@ -187,12 +199,15 @@ div.csl-indent {
 </ul></li>
 </ul></li>
 </ul>
-<p><strong>simPop R</strong></p>
+</div>
+<div id="simpop-r" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> simPop R<a href="literature.html#simpop-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p><strong>Simulation of Synthetic Complex Data: The R Package simPop (Templ, Meindl, Kowarik &amp; Dupriez, 2017)</strong></p>
 </blockquote>
-<p>The <a href="https://cran.r-project.org/web/packages/simPop/index.html">simPop</a> R package was published in 2022 and is described in <span class="citation">(<a href="#ref-Templ2017" role="doc-biblioref">Templ et al. 2017</a>)</span>.</p>
+<p>The <a href="https://cran.r-project.org/web/packages/simPop/index.html">simPop</a> R package was published in 2022 and is described in <span class="citation">(<a href="#ref-Templ2017">Templ et al. 2017</a>)</span>.</p>
 
+</div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">

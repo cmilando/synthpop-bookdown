@@ -2,7 +2,7 @@
 
 *Some literature on approaches to synthetic population generation:*
 
-**PopGen**
+## PopGen
 
 > **Synthetic population generator: PopGen (Mobility Analytics Research Group, 2016)** 
 
@@ -19,14 +19,14 @@ The methodology was presented at the 8th Annual Meeting of the Transportation Re
 
 *N.B. Might want more here but methods are mathematically complex; requires further reading.* 
 
-**PopGen v. PopSynWin**
+## PopSynWin
 
 > **Creating a synthetic population: A comparison of tools (Jain, Ronald, and Winter, 2015)** 
 
 This article was produced for the 3rd Conference of the Transportation Research Group of India by a group of infrastructure engineers at The University of Melbourne, Australia [@jain_2015]. The work generates and compares synthetic populations using two software programs: PopSynWin (iterative proportional fitting algorithm) and PopGen (see above, iterative proportional update algorithm). Differences between actual and synthesized population characteristics are presented. Authors concluded that the PopGen software yielded better results, with closer matches of person level characteristic distributions to that of the actual population. 
 
 
-**synthpop R**
+## synthpop R
 
 > **synthpop: Bespoke Creation of Synthetic Data in R (Nowok, Raab, & Dibben, 2016)** 
 
@@ -43,7 +43,7 @@ The [synthpop](https://www.jstatsoft.org/article/view/v074i11) R package was pub
       - (ordered/not) polytomous logistic regression
       - predictive mean matching)
       
-**simPop R**
+## simPop R
 
 > **Simulation of Synthetic Complex Data: The R Package simPop (Templ, Meindl, Kowarik & Dupriez, 2017)** 
 
