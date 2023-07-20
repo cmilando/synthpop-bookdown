@@ -110,7 +110,7 @@ PUMAS <- list("01300", "03306", "00505", "03302", "00506", "00507", "00508",
               "01000", "02800","00503")
 table_list <- vector(mode = "list")
 for (puma in PUMAS){
-  table <- read_csv(paste0("docs/ACS_ancestry_PUMA", puma, ".csv"))
+  table <- read_csv(paste0("ACS_ancestry_PUMA", puma, ".csv"))
   table_list[[puma]] <- table
 }
 knitr::kable(table_list[["01300"]], caption = '**PUMA01300 Ancestry Mappings**', booktabs = TRUE)
@@ -154,8 +154,8 @@ We have downloaded the PUMS data at the highest spatial resolution available: PU
 
 ```{r nice-tab2, echo=FALSE, tidy=FALSE}
 library(readr)
-person <- read_csv("docs/PUMA_p_variables.csv")
-hhold <- read_csv("docs/PUMA_h_variables.csv")
+person <- read_csv("PUMA_p_variables.csv")
+hhold <- read_csv("PUMA_h_variables.csv")
 knitr::kable(person, caption = '**Relevant PUMS Person Variables**', booktabs = TRUE)
 knitr::kable(hhold, caption = '**Relevant PUMS Household Variables**', booktabs = TRUE)
 ```
@@ -173,7 +173,7 @@ Age is a categorical variable in the ACS dataset (as shown above). We use the fo
 ```{r nice-tab3, echo=FALSE, tidy=FALSE}
 library(readxl)
 
-B01001 <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B01001")
+B01001 <- read_excel("acs_pums_mappings.xlsx", sheet = "B01001")
 knitr::kable(B01001, caption = '**B01001 Mapping**',booktabs = TRUE)
 ```
 
@@ -188,7 +188,7 @@ The education ACS tables do not include the population under 18 years of age. In
 ```{r nice-tab4, echo=FALSE, tidy=FALSE}
 library(readxl)
 
-B15001 <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B15001")
+B15001 <- read_excel("acs_pums_mappings.xlsx", sheet = "B15001")
 knitr::kable(B15001, caption = '**B15001 Mapping**',booktabs = TRUE)
 ```
 
@@ -201,9 +201,9 @@ Additionally, note the added category in the ACS column for B19037 Household Inc
 ```{r nice-tab5, echo=FALSE, tidy=FALSE}
 library(readxl)
 
-B19037_age <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B19037_age")
+B19037_age <- read_excel("acs_pums_mappings.xlsx", sheet = "B19037_age")
 knitr::kable(B19037_age, caption = '**B19037 Householder Age Mapping**',booktabs = TRUE)
-B19037_income <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B19037_income")
+B19037_income <- read_excel("acs_pums_mappings.xlsx", sheet = "B19037_income")
 knitr::kable(B19037_income, caption = '**B19037 Household Income Mapping**',booktabs = TRUE)
 ```
 
@@ -216,9 +216,9 @@ Additionally, note the added category in the ACS column for B25007 Household Ten
 ```{r nice-tab6, echo=FALSE, tidy=FALSE}
 library(readxl)
 
-B25007_age <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B25007_age")
+B25007_age <- read_excel("acs_pums_mappings.xlsx", sheet = "B25007_age")
 knitr::kable(B25007_age, caption = '**B25007 Householder Age Mapping**',booktabs = TRUE)
-B25007_tenure <- read_excel("docs/acs_pums_mappings.xlsx", sheet = "B25007_tenure")
+B25007_tenure <- read_excel("acs_pums_mappings.xlsx", sheet = "B25007_tenure")
 knitr::kable(B25007_tenure, caption = '**B25007 Household Tenure Mapping**',booktabs = TRUE)
 ```
 

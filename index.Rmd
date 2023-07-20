@@ -41,45 +41,45 @@ pumas <- c("00503",
 MA_pumas_mywra <- subset(MA_pumas, MA_pumas$PUMACE10 %in% pumas)
 MA_tracts <- tracts(state = "MA", year = 2021)
 
-my_dir <- "docs/mywra_tractsbypuma/"
-PUMA00503 <- read.table(paste0(my_dir,"PUMA00503.rds"))
-PUMA00503 <- unique(substr(PUMA00503$V1, 6,11))
+my_dir <- "mywra_tractsbypuma/"
+PUMA00503 <- readRDS(paste0(my_dir,"PUMA00503.rds"))
+PUMA00503 <- unique(substr(PUMA00503$PUMACE10, 6,11))
 PUMA00503_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00503)
   
-PUMA00505 <- read.table(paste0(my_dir,"PUMA00505.rds"))
-PUMA00505 <- unique(substr(PUMA00505$V1, 6,11))
+PUMA00505 <- readRDS(paste0(my_dir,"PUMA00505.rds"))
+PUMA00505 <- unique(substr(PUMA00505$PUMACE10, 6,11))
 PUMA00505_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00505)
 
-PUMA00506 <- read.table(paste0(my_dir,"PUMA00506.rds"))
-PUMA00506 <- unique(substr(PUMA00506$V1, 6,11))
+PUMA00506 <- readRDS(paste0(my_dir,"PUMA00506.rds"))
+PUMA00506 <- unique(substr(PUMA00506$PUMACE10, 6,11))
 PUMA00506_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00506)
 
-PUMA00507 <- read.table(paste0(my_dir,"PUMA00507.rds"))
-PUMA00507 <- unique(substr(PUMA00507$V1, 6,11))
+PUMA00507 <- readRDS(paste0(my_dir,"PUMA00507.rds"))
+PUMA00507 <- unique(substr(PUMA00507$PUMACE10, 6,11))
 PUMA00507_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00507)
 
-PUMA00508 <- read.table(paste0(my_dir,"PUMA00508.rds"))
-PUMA00508 <- unique(substr(PUMA00508$V1, 6,11))
+PUMA00508 <- readRDS(paste0(my_dir,"PUMA00508.rds"))
+PUMA00508 <- unique(substr(PUMA00508$PUMACE10, 6,11))
 PUMA00508_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00508)
 
-PUMA01000 <- read.table(paste0(my_dir,"PUMA01000.rds"))
-PUMA01000 <- unique(substr(PUMA01000$V1, 6,11))
+PUMA01000 <- readRDS(paste0(my_dir,"PUMA01000.rds"))
+PUMA01000 <- unique(substr(PUMA01000$PUMACE10, 6,11))
 PUMA01000_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA01000)
 
-PUMA01300 <- read.table(paste0(my_dir,"PUMA01300.rds"))
-PUMA01300 <- unique(substr(PUMA01300$V1, 6,11))
+PUMA01300 <- readRDS(paste0(my_dir,"PUMA01300.rds"))
+PUMA01300 <- unique(substr(PUMA01300$PUMACE10, 6,11))
 PUMA01300_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA01300)
 
-PUMA02800 <- read.table(paste0(my_dir,"PUMA02800.rds"))
-PUMA02800 <- unique(substr(PUMA02800$V1, 6,11))
+PUMA02800 <- readRDS(paste0(my_dir,"PUMA02800.rds"))
+PUMA02800 <- unique(substr(PUMA02800$PUMACE10, 6,11))
 PUMA02800_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA02800)
 
-PUMA03302 <- read.table(paste0(my_dir,"PUMA03302.rds"))
-PUMA03302 <- unique(substr(PUMA03302$V1, 6,11))
+PUMA03302 <- readRDS(paste0(my_dir,"PUMA03302.rds"))
+PUMA03302 <- unique(substr(PUMA03302$PUMACE10, 6,11))
 PUMA03302_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA03302)
 
-PUMA03306 <- read.table(paste0(my_dir,"PUMA03306.rds"))
-PUMA03306 <- unique(substr(PUMA03306$V1, 6,11))
+PUMA03306 <- readRDS(paste0(my_dir,"PUMA03306.rds"))
+PUMA03306 <- unique(substr(PUMA03306$PUMACE10, 6,11))
 PUMA03306_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA03306)
 
 

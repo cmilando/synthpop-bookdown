@@ -1,0 +1,6 @@
+﻿Variable,Explanation
+SERIALNO,Housing unit/GQ person serial number
+TEN,Tenure (owned/rented?)
+HINCP,Household income
+ADJINC,Adjusted household income
+NP,Number of people in house
