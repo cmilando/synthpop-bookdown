@@ -110,7 +110,7 @@ PUMAS <- list("01300", "03306", "00505", "03302", "00506", "00507", "00508",
               "01000", "02800","00503")
 table_list <- vector(mode = "list")
 for (puma in PUMAS){
-  table <- read_csv(paste0("ACS_ancestry_PUMA", puma, ".csv"))
+  table <- read_csv(paste0("/docs/ACS_ancestry_PUMA", puma, ".csv"))
   table_list[[puma]] <- table
 }
 knitr::kable(table_list[["01300"]], caption = '**PUMA01300 Ancestry Mappings**', booktabs = TRUE)
@@ -228,10 +228,12 @@ knitr::kable(B25007_tenure, caption = '**B25007 Household Tenure Mapping**',book
 This section details the R project structure (hereafter referred to as ACRESr.proj) implemented prior to running CO_BU.exe. 
 
 **Step 1. Pulling ACS Data.** 
-Run the following code:
+Run the following code (only need to run 1x):
 [ACS] - 0 - Grab ACS Data.R  
 
-* Objective: pull all raw census data using census API calls  
+Objectives: 
+
+* Pull all raw census data using census API calls  
 
 * Provide census API key. 
 
@@ -253,11 +255,14 @@ Run the following code:
     * [ACS] - 0 - v - HHage and Tenure.R. 
     
 **Step 2. Output Estimation Constraints and Area List.**
-Run the following code:  
+Run the following code (run 1x per PUMA, adjusting inputs for lines 16-18):  
 [ACS] - 1 - combine all.R. 
 
-* Objective: for a given PUMA and its corresponding tracts, pull ACS columns into
-  a table (estimation_constraints) and list all tracts (Area_list). 
+Objectives: 
+
+* For a given PUMA and its corresponding tracts, pull ACS columns into a table (estimation_constraints) and list all tracts (Area_list). 
+
+To do after running: 
   
   * Copy output from this script into CO_BU_MAC/Data. 
   
@@ -268,11 +273,15 @@ Run the following code:
   * Go to MA census tract data/ancestry B04006/ and copy the resulting ancestry mapping files into the script [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R 
   
 **Step 3. Create Mapped Person and Mapped House files using PUMS data.** 
-Run the following code: [PUMS] - 1 - Read in PUMS data.R. 
+Run the following code: [PUMS] - 1 - Read in PUMS data.R (run 1x per PUMA, adjusting lines 39 and 40). 
 
-* Objective: for a given PUMA, produce person and household inputs using the PUMA, subset to the variables corresponding to those provided in the ACS table constraints used.  
+Objectives: 
 
-  * This code runs all four [PUMS] scripts, creating mappings with [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R, grabbing person data in [PUMS] - 1 - ii - person data.R, household data in [PUMS] - 1 - iii - house data.R, and finally creating the output files in [PUMS] - 1 - iv - convert PUMS to CO.R 
+* For a given PUMA, produce person and household inputs using the PUMA, subset to the variables corresponding to those provided in the ACS table constraints used.  
+
+  * This code runs all four [PUMS] scripts, creating mappings with [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R, grabbing person data in [PUMS] - 1 - ii - person data.R, household data in [PUMS] - 1 - iii - house data.R, and finally creating the output files in [PUMS] - 1 - iv - convert PUMS to CO.R  
+  
+To do after running: 
 
   * Copy the mapped_person, mapped_house, and house_serials text files from the ACRESr output folder into CO_BU_MAC/Data. 
 
@@ -294,8 +303,34 @@ As described in the R Code, you should have the following files in CO_BU_MAC/Dat
 5. 'Data/constraining_tables_info_PUMA.txt' 
 
 6. 'Data/control_parameters_PUMA.txt' 
+    * Correct line 3 to reflect the name of the folders where you would like the output from CO_BU run to go (see within Estimates and Estimate_Fit). Suggested label: PUMA#. 
+    * Correct lines 7 and 8 to reflect the number of constraint cells (line 7) (see calc_pearson.xlsx for this) and the number of constraint cells scaled by 10x (line 8). 
 
-7. 'Data/CO_random_seednumbers.txt'  
+7. 'Data/CO_random_seednumbers.txt' 
+
+### Run CO_BU.exe 
+
+In the terminal, with the directory set to the co-bu-mac folder, run the following: 
+
+1. The make file, make.sh using the code: 
+
+    cd Code
+
+    sh make.sh 
+
+
+2. Then, in order to run the executable (should see the executable has been created in the co-bu-mac folder): 
+
+    cd .. 
+
+    codesign -s - CO_BU     
+    
+    [Why codesign? See here for explanation.](https://eclecticlight.co/2020/08/22/apple-silicon-macs-will-require-signed-code/) 
+    
+3. Run the executable:
+
+    co-bu-mac % ./CO_BU
+
 
 
 ### Phase 1: with replacement

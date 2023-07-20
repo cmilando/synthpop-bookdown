@@ -23,7 +23,7 @@
 <meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2023-07-18" />
+<meta name="date" content="2023-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,8 +102,9 @@
 <li class="chapter" data-level="4.6" data-path="methods.html"><a href="methods.html#bring-into-the-co-model"><i class="fa fa-check"></i><b>4.6</b> Bring into the CO model</a>
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="methods.html"><a href="methods.html#prepare-data"><i class="fa fa-check"></i><b>4.6.1</b> Prepare Data:</a></li>
-<li class="chapter" data-level="4.6.2" data-path="methods.html"><a href="methods.html#phase-1-with-replacement"><i class="fa fa-check"></i><b>4.6.2</b> Phase 1: with replacement</a></li>
-<li class="chapter" data-level="4.6.3" data-path="methods.html"><a href="methods.html#phase-2-without-replacement"><i class="fa fa-check"></i><b>4.6.3</b> Phase 2: without replacement</a></li>
+<li class="chapter" data-level="4.6.2" data-path="methods.html"><a href="methods.html#run-co_bu.exe"><i class="fa fa-check"></i><b>4.6.2</b> Run CO_BU.exe</a></li>
+<li class="chapter" data-level="4.6.3" data-path="methods.html"><a href="methods.html#phase-1-with-replacement"><i class="fa fa-check"></i><b>4.6.3</b> Phase 1: with replacement</a></li>
+<li class="chapter" data-level="4.6.4" data-path="methods.html"><a href="methods.html#phase-2-without-replacement"><i class="fa fa-check"></i><b>4.6.4</b> Phase 2: without replacement</a></li>
 </ul></li>
 <li class="chapter" data-level="4.7" data-path="methods.html"><a href="methods.html#exporting-from-the-co-model"><i class="fa fa-check"></i><b>4.7</b> Exporting from the CO model</a></li>
 </ul></li>
@@ -1428,10 +1429,11 @@ If <span class="math inline">\(total_{new}-total_{true} = total_{diff} &lt; 0\)<
 <h2><span class="header-section-number">4.5</span> R Code Guide<a href="methods.html#r-code-guide" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This section details the R project structure (hereafter referred to as ACRESr.proj) implemented prior to running CO_BU.exe.</p>
 <p><strong>Step 1. Pulling ACS Data.</strong>
-Run the following code:
+Run the following code (only need to run 1x):
 [ACS] - 0 - Grab ACS Data.R</p>
+<p>Objectives:</p>
 <ul>
-<li><p>Objective: pull all raw census data using census API calls</p></li>
+<li><p>Pull all raw census data using census API calls</p></li>
 <li><p>Provide census API key.</p></li>
 <li><p>Pull all custom functions (custom-functions.R).</p></li>
 <li><p>Define the PUMAs with census tracts to be included in each.</p></li>
@@ -1458,26 +1460,31 @@ of categories to those contributing at least i% of the total population.<br />
 </ul></li>
 </ul>
 <p><strong>Step 2. Output Estimation Constraints and Area List.</strong>
-Run the following code:<br />
+Run the following code (run 1x per PUMA, adjusting inputs for lines 16-18):<br />
 [ACS] - 1 - combine all.R.</p>
+<p>Objectives:</p>
 <ul>
-<li><p>Objective: for a given PUMA and its corresponding tracts, pull ACS columns into
-a table (estimation_constraints) and list all tracts (Area_list).</p>
+<li>For a given PUMA and its corresponding tracts, pull ACS columns into a table (estimation_constraints) and list all tracts (Area_list).</li>
+</ul>
+<p>To do after running:</p>
 <ul>
 <li><p>Copy output from this script into CO_BU_MAC/Data.</p></li>
 <li><p>Copy printed output for calc_pearson.xlsx, and then take the resulting excel column and paste into the constraining_tables_info.txt file in CO_BU_MAC/Data.</p></li>
 <li><p>Go to MA census tract data/ancestry - hispanic B03001/ and copy the resulting hispanic mapping files into the script [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R</p></li>
 <li><p>Go to MA census tract data/ancestry B04006/ and copy the resulting ancestry mapping files into the script [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R</p></li>
-</ul></li>
 </ul>
 <p><strong>Step 3. Create Mapped Person and Mapped House files using PUMS data.</strong>
-Run the following code: [PUMS] - 1 - Read in PUMS data.R.</p>
+Run the following code: [PUMS] - 1 - Read in PUMS data.R (run 1x per PUMA, adjusting lines 39 and 40).</p>
+<p>Objectives:</p>
 <ul>
-<li><p>Objective: for a given PUMA, produce person and household inputs using the PUMA, subset to the variables corresponding to those provided in the ACS table constraints used.</p>
+<li><p>For a given PUMA, produce person and household inputs using the PUMA, subset to the variables corresponding to those provided in the ACS table constraints used.</p>
 <ul>
-<li><p>This code runs all four [PUMS] scripts, creating mappings with [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R, grabbing person data in [PUMS] - 1 - ii - person data.R, household data in [PUMS] - 1 - iii - house data.R, and finally creating the output files in [PUMS] - 1 - iv - convert PUMS to CO.R</p></li>
-<li><p>Copy the mapped_person, mapped_house, and house_serials text files from the ACRESr output folder into CO_BU_MAC/Data.</p></li>
+<li>This code runs all four [PUMS] scripts, creating mappings with [PUMS] - 1 - i - Create Ancestry and Hispanic and Latino Mappings.R, grabbing person data in [PUMS] - 1 - ii - person data.R, household data in [PUMS] - 1 - iii - house data.R, and finally creating the output files in [PUMS] - 1 - iv - convert PUMS to CO.R</li>
 </ul></li>
+</ul>
+<p>To do after running:</p>
+<ul>
+<li>Copy the mapped_person, mapped_house, and house_serials text files from the ACRESr output folder into CO_BU_MAC/Data.</li>
 </ul>
 </div>
 <div id="bring-into-the-co-model" class="section level2 hasAnchor" number="4.6">
@@ -1491,16 +1498,35 @@ Run the following code: [PUMS] - 1 - Read in PUMS data.R.</p>
 <li><p>‘Data/estimation_constraints_PUMA.txt’</p></li>
 <li><p>‘Data/Area_list_PUMA.txt’</p></li>
 <li><p>‘Data/constraining_tables_info_PUMA.txt’</p></li>
-<li><p>‘Data/control_parameters_PUMA.txt’</p></li>
+<li><p>‘Data/control_parameters_PUMA.txt’</p>
+<ul>
+<li>Correct line 3 to reflect the name of the folders where you would like the output from CO_BU run to go (see within Estimates and Estimate_Fit). Suggested label: PUMA#.</li>
+<li>Correct lines 7 and 8 to reflect the number of constraint cells (line 7) (see calc_pearson.xlsx for this) and the number of constraint cells scaled by 10x (line 8).</li>
+</ul></li>
 <li><p>‘Data/CO_random_seednumbers.txt’</p></li>
 </ol>
 </div>
-<div id="phase-1-with-replacement" class="section level3 hasAnchor" number="4.6.2">
-<h3><span class="header-section-number">4.6.2</span> Phase 1: with replacement<a href="methods.html#phase-1-with-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="run-co_bu.exe" class="section level3 hasAnchor" number="4.6.2">
+<h3><span class="header-section-number">4.6.2</span> Run CO_BU.exe<a href="methods.html#run-co_bu.exe" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the terminal, with the directory set to the co-bu-mac folder, run the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>The make file, make.sh using the code:</p>
+<p>cd Code</p>
+<p>sh make.sh</p></li>
+<li><p>Then, in order to run the executable (should see the executable has been created in the co-bu-mac folder):</p>
+<p>cd ..</p>
+<p>codesign -s - CO_BU</p>
+<p><a href="https://eclecticlight.co/2020/08/22/apple-silicon-macs-will-require-signed-code/">Why codesign? See here for explanation.</a></p></li>
+<li><p>Run the executable:</p>
+<p>co-bu-mac % ./CO_BU</p></li>
+</ol>
+</div>
+<div id="phase-1-with-replacement" class="section level3 hasAnchor" number="4.6.3">
+<h3><span class="header-section-number">4.6.3</span> Phase 1: with replacement<a href="methods.html#phase-1-with-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This we will do for basic demographics, the 14 characteristics as before</p>
 </div>
-<div id="phase-2-without-replacement" class="section level3 hasAnchor" number="4.6.3">
-<h3><span class="header-section-number">4.6.3</span> Phase 2: without replacement<a href="methods.html#phase-2-without-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="phase-2-without-replacement" class="section level3 hasAnchor" number="4.6.4">
+<h3><span class="header-section-number">4.6.4</span> Phase 2: without replacement<a href="methods.html#phase-2-without-replacement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This we will do once we have the housing data Jon shared</p>
 </div>
 </div>
