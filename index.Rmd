@@ -14,8 +14,10 @@ description: "This book describes the process and applications of using the CO m
 
 # Prerequisites
 
-Here we will describe the overall purpose of the project, with some links.
-and probably embed and image or two.
+This book details synthetic population generation, or 'synthpop' generation, provides detailed methods and links (NOT YET PUBLISHED) to R Code to create your own synthpop using 
+a combination of publicly available datasets. Please do not get this confused with Synth-Pop the British synthesizer movement, because, as Annie Lennox is quoted saying in the [NYTimes in 1984](https://timesmachine.nytimes.com/timesmachine/1984/08/03/109168.html?pageNumber=45):  
+
+**"When you say 'synth-pop,' I immediately think of two guys with a synthesizer and a drum machine, and to me that's boring."**
 
 
 ```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
@@ -259,4 +261,341 @@ map_2 <- leaflet() %>%
 map_2
 ```
 
+
+**What does a synthetic population mean? Well, the following demonstrates what a synthetic population would look like for a sample of one Public Use Microdata Area (PUMA # 00503).** 
+N.B. This map is created using a random sampling of 25% of each respective census tract's synthetic population generated in order to make it easier to view. The number of dots therefore represents the population density in that tract. Also note that we of course do not assume people are swimming in the water bodies. Flannery needs to figure out how to generate random points without placing them in the bodies of water.
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(tigris)
+library(leaflet) #https://rstudio.github.io/leaflet/basemaps.html
+library(sf)
+library(dplyr)
+library(utils)
+library(readr)
+library(maptools)
+library(sp)
+# Plot tract polygons and puma polygons together
+MA_pumas <- pumas(state = "MA", year = 2021)
+pumas <- c("00503")
+MA_pumas_mywra <- subset(MA_pumas, MA_pumas$PUMACE10 %in% pumas)
+MA_tracts <- tracts(state = "MA", year = 2021)
+
+my_dir <- "mywra_tractsbypuma/"
+PUMA00503 <- readRDS(paste0(my_dir,"PUMA00503.rds"))
+PUMA00503 <- unique(substr(PUMA00503$PUMACE10, 6,11))
+PUMA00503_tracts <- subset(MA_tracts,MA_tracts$TRACTCE %in% PUMA00503)
+
+synthpop_00503 <- readRDS("syntheticpop/PUMA00503_syntheticpop.RDS")
+synthpop_00503$TRACTCE <- substr(synthpop_00503$tract, 6, 11)
+
+# Prepare Hispanic Category for mapping:
+unique(synthpop_00503$HISP)
+# Recode: if 3, 7, or 1, then separate. All else are '4' for other hispanic
+  # '3'=1, # .Puerto Rican "Puerto.Rican" 
+  # '7'=2, # .Guatemalan "Guatemalan"  
+  # '1'=3 #.Not Spanish/Hispanic/Latino (Other) "Other"
+synthpop_00503$HISP_FACTOR <- ifelse(synthpop_00503$HISP == 3, "Puerto Rican", "Other Spanish/Hispanic/Latino")
+synthpop_00503$HISP_FACTOR <- ifelse(synthpop_00503$HISP == 7, "Guatemalan", synthpop_00503$HISP_FACTOR)
+synthpop_00503$HISP_FACTOR <- ifelse(synthpop_00503$HISP == 1, "Not Spanish/Hispanic/Latino", synthpop_00503$HISP_FACTOR)
+table(synthpop_00503$HISP_FACTOR)
+# For loop to iterate through TRACTCE
+this_PUMA_all_TRACTCE <- unique(PUMA00503_tracts$TRACTCE)
+all_points_with_data <- vector(mode = "list", length = length(this_PUMA_all_TRACTCE))
+names(all_points_with_data) <- this_PUMA_all_TRACTCE
+sampled_points_with_data <- vector(mode = "list", length = length(this_PUMA_all_TRACTCE))
+names(sampled_points_with_data) <- this_PUMA_all_TRACTCE
+
+for (this_tract in this_PUMA_all_TRACTCE){
+  subset_tract <- subset(PUMA00503_tracts, TRACTCE == this_tract)
+  subset_synthpop <- subset(synthpop_00503, TRACTCE == this_tract)
+  num_points <- nrow(subset_synthpop)
+  if(num_points == 0) next
+  # Sample num_points random points within the polygon
+  points <- sf::st_sample(subset_tract, size=num_points)
+  # Convert from sfc to sf
+  points_sf <- points %>%
+               st_sf %>%
+               st_cast
+  points_sf$ID <- 1:num_points
+  subset_synthpop$ID <- points_sf$ID
+  points_with_data <- sp::merge(points_sf, subset_synthpop, by = "ID")
+  # Generate a random sample of 25% of the data
+  set.seed(1)
+  sample_points_with_data <- points_with_data %>%
+                             slice_sample(prop = 0.25)
+  all_points_with_data[[this_tract]] <- points_with_data
+  sampled_points_with_data[[this_tract]] <- sample_points_with_data
+}
+
+# Set your own colors manually:
+
+pal <- colorFactor(
+  palette = c( "gold1",
+  "skyblue2", "#FB9A99",
+  "palegreen2"),
+  domain = synthpop_00503$HISP_FACTOR
+)
+# Create the underlying map
+map3 <- leaflet() %>%
+    setView(lat = 42.46566388574347, lng = -71.28568709503587, zoom = 11) %>%
+    addProviderTiles(
+    providers$Esri.WorldTopoMap,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Topographic") %>%
+   addProviderTiles(
+    providers$Esri.WorldGrayCanvas,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Gray Canvas") %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Imagery")%>%
+  addPolygons(
+    data = MA_pumas_mywra,
+    # set the color of outlines
+    stroke = T,
+    color = "black",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "All Public Use Microdata Areas",
+    popup = ~NAMELSAD10
+   )%>%
+  addPolygons(
+    data = PUMA00503_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "black",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = .8,
+    group = "All PUMA00503 Tracts",
+    popup = ~TRACTCE
+   )
+# Loop over various polygons to include.
+overlay_vector <- vector(mode = "list")
+subset_sample <- subset(sampled_points_with_data, !names(sampled_points_with_data) == "359302")
+for (tract_number in 1:length(subset_sample)) {
+    this_tract_data <- subset_sample[[tract_number]]
+    overlay_vector[[tract_number]] <- paste0("Tract #", (PUMA00503[tract_number])) 
+    map3 <- map3 %>%
+            addCircles(
+            data = this_tract_data,
+            # set the color of outlines
+            stroke = F,
+            color = ~pal(this_tract_data$HISP_FACTOR), 
+            fillOpacity = .8,
+            fill = T,
+            # set the opacity of the outline
+            # set the stroke width in pixels
+            weight = .6,
+            radius = .1,
+            group = paste0("Tract #", (PUMA00503[tract_number]))
+            )
+}
+
+map3 <- map3 %>%
+  addLayersControl(
+    baseGroups = c("ESRI World Topographic",
+                   "ESRI World Gray Canvas",
+                   "ESRI World Imagery"),
+    overlayGroups = c("All Public Use Microdata Areas",
+                      "All PUMA00503 Tracts",
+                      overlay_vector),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addLegend("topleft",
+  pal = pal,
+  values = synthpop_00503$HISP_FACTOR,
+  title = "Hispanic Ancestry Category",
+  opacity = .8)
+
+# ACS Chloropleth
+ACS_data <- read_csv("ACS_10_5YR_B03001_mywra_PUMA00503.csv")
+ACS_data <- subset(ACS_data, ACS_data$Total != 0)
+ACS_data$TRACTCE <- substr(ACS_data$Id, 15, nchar(ACS_data$Id))
+ACS_data$Guat_perc <- ifelse(ACS_data$Guatemalan != 0, 100*(ACS_data$Guatemalan/ACS_data$Total), 0)
+ACS_data_geom <- sp::merge(PUMA00503_tracts, ACS_data, by = "TRACTCE")
+
+# Color palette
+library(RColorBrewer)
+mybins <- c(0,5,10,15,20,25,30,35)
+pal2 <- colorBin( palette="YlOrRd",
+                  alpha = T, 
+                  domain=ACS_data_geom$Guat_perc, 
+                  #na.color="transparent", 
+                  bins=mybins)
+# TODO why is this so transparent?!
+# Basic choropleth with leaflet?
+map4 <- leaflet() %>% 
+   setView(lat = 42.46566388574347, lng = -71.28568709503587, zoom = 11) %>%
+    addProviderTiles(
+    providers$Esri.WorldTopoMap,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Topographic") %>%
+   addProviderTiles(
+    providers$Esri.WorldGrayCanvas,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Gray Canvas") %>%
+  addProviderTiles(
+    providers$Esri.WorldImagery,
+    options = providerTileOptions(opacity = 0.75),
+    group = "ESRI World Imagery")%>%
+  addPolygons(
+    data = MA_pumas_mywra,
+    # set the color of outlines
+    stroke = T,
+    color = "black",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = 1.4,
+    group = "All Public Use Microdata Areas",
+    popup = ~NAMELSAD10
+   )%>%
+  addPolygons(
+    data = PUMA00503_tracts,
+    # set the color of outlines
+    stroke = T,
+    color = "black",
+    fill = F,
+    # set the opacity of the outline
+    # set the stroke width in pixels
+    weight = .8,
+    group = "All PUMA00503 Tracts",
+    popup = ~TRACTCE
+   )%>%
+  addPolygons(
+    data = ACS_data_geom,
+    fillColor = ~pal2(Guat_perc),
+    opacity = .95,
+    stroke=FALSE,
+    group = "Guatemalan Population %")%>%
+  addLayersControl(
+    baseGroups = c("ESRI World Topographic",
+                   "ESRI World Gray Canvas",
+                   "ESRI World Imagery"),
+    overlayGroups = c("All Public Use Microdata Areas",
+                      "All PUMA00503 Tracts",
+                      "Guatemalan Population %"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addLegend(
+  "topleft",
+  pal = pal2,
+  values = ACS_data_geom$Guat_perc,
+  title = "Guatemalan Population %",
+  opacity = .8)
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+map3
+```
+
+**We can compare this population to the census tract level statistics provided by ACS. Let's take a look at the Guatemalan population by tract, for example. We see a similar concentration in the southern tracts of the PUMA.**
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+map4
+# 
+# # Redlining
+# library(rgdal)
+# redlining <- readOGR( 
+#   dsn= "redlining_shapefile/redlining_shp/" , 
+#   layer="MA_Redlining",
+#   verbose=FALSE
+# )
+# redlining_sf <- redlining %>%
+#                st_as_sf %>%
+#                st_cast
+# unique(redlining_sf$holc_grade)
+# subset_redline <- subset(redlining_sf, redlining_sf$layer %in% c("Waltham",
+# "Concord",
+# "Lexington",
+# "Lincoln",
+# "Bedford",
+# "Burlington",
+# "Watertown",
+# "Weston"))
+# # Palette
+# subset_redline$holc_grade_num <- ifelse(subset_redline$holc_grade == "A",1,4)
+# subset_redline$holc_grade_num <- ifelse(subset_redline$holc_grade == "B",2,subset_redline$holc_grade_num)
+# subset_redline$holc_grade_num <- ifelse(subset_redline$holc_grade == "C",3,subset_redline$holc_grade_num)
+# pal3 <- colorFactor(
+#   palette = c( "pink",
+#   "red2", "red3",
+#   "red4"),
+#   domain = subset_redline$holc_grade_num
+# )
+# 
+# 
+# # Map 5
+# map5 <- leaflet() %>% 
+#    setView(lat = 42.46566388574347, lng = -71.28568709503587, zoom = 11) %>%
+#     addProviderTiles(
+#     providers$Esri.WorldTopoMap,
+#     options = providerTileOptions(opacity = 0.75),
+#     group = "ESRI World Topographic") %>%
+#    addProviderTiles(
+#     providers$Esri.WorldGrayCanvas,
+#     options = providerTileOptions(opacity = 0.75),
+#     group = "ESRI World Gray Canvas") %>%
+#   addProviderTiles(
+#     providers$Esri.WorldImagery,
+#     options = providerTileOptions(opacity = 0.75),
+#     group = "ESRI World Imagery")%>%
+#   addPolygons(
+#     data = MA_pumas_mywra,
+#     # set the color of outlines
+#     stroke = T,
+#     color = "black",
+#     fill = F,
+#     # set the opacity of the outline
+#     # set the stroke width in pixels
+#     weight = 1.4,
+#     group = "All Public Use Microdata Areas",
+#     popup = ~NAMELSAD10
+#    )%>%
+#   addPolygons(
+#     data = PUMA00503_tracts,
+#     # set the color of outlines
+#     stroke = T,
+#     color = "black",
+#     fill = F,
+#     # set the opacity of the outline
+#     # set the stroke width in pixels
+#     weight = .8,
+#     group = "All PUMA00503 Tracts",
+#     popup = ~TRACTCE
+#    )%>%
+#   addPolygons(
+#     data = subset_redline,
+#     stroke = T,
+#     color = "black",
+#     fill = T
+#     # fillColor = ~pal3(holc_grade_num),
+#     # opacity = 1,
+#     # stroke=FALSE
+#     )%>%
+#   addLayersControl(
+#     baseGroups = c("ESRI World Topographic",
+#                    "ESRI World Gray Canvas",
+#                    "ESRI World Imagery"),
+#     overlayGroups = c("All Public Use Microdata Areas",
+#                       "All PUMA00503 Tracts",
+#                       "HOLC Grade"),
+#     options = layersControlOptions(collapsed = FALSE)
+#   ) %>%
+#   addLegend(
+#   "bottomleft",
+#   pal = pal3,
+#   values = ~subset_redline$holc_grade_num,
+#   title = "HOLC Grade",
+#   opacity = .8)
+# 
+# map5
+```
 
