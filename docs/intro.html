@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Introduction | Synthetic population generation for ACRES project</title>
   <meta name="description" content="This book describes the process and applications of using the CO model to create a synthetic population for MyWRA, and estimate the impact of climate-change adaptation efforts." />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Introduction | Synthetic population generation for ACRES project" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2023-07-26" />
+<meta name="date" content="2025-07-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,19 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
-<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
-<script src="libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
 
 
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -101,7 +95,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">ACRES Synthetic Population</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
@@ -135,10 +129,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.6.1" data-path="methods.html"><a href="methods.html#prepare-data"><i class="fa fa-check"></i><b>4.6.1</b> Prepare Data:</a></li>
 <li class="chapter" data-level="4.6.2" data-path="methods.html"><a href="methods.html#run-co_bu.exe"><i class="fa fa-check"></i><b>4.6.2</b> Run CO_BU.exe</a></li>
-<li class="chapter" data-level="4.6.3" data-path="methods.html"><a href="methods.html#phase-1-with-replacement"><i class="fa fa-check"></i><b>4.6.3</b> Phase 1: with replacement</a></li>
-<li class="chapter" data-level="4.6.4" data-path="methods.html"><a href="methods.html#phase-2-without-replacement"><i class="fa fa-check"></i><b>4.6.4</b> Phase 2: without replacement</a></li>
+<li class="chapter" data-level="4.6.3" data-path="methods.html"><a href="methods.html#read-the-output-and-check-error"><i class="fa fa-check"></i><b>4.6.3</b> Read the output and check error</a></li>
 </ul></li>
-<li class="chapter" data-level="4.7" data-path="methods.html"><a href="methods.html#exporting-from-the-co-model"><i class="fa fa-check"></i><b>4.7</b> Exporting from the CO model</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
 <ul>
@@ -275,7 +267,7 @@ Levy, Jonathan I., Maria Patricia Fabian, and Junenette L. Peters. 2014. <span>�
 Milando, Chad W., Maayan Yitshak-Sade, Antonella Zanobetti, Jonathan I. Levy, Francine Laden, and M. Patricia Fabian. 2021. <span>“Modeling the Impact of Exposure Reductions Using Multi-Stressor Epidemiology, Exposure Models, and Synthetic Microdata: An Application to Birthweight in Two Environmental Justice Communities.”</span> <em>Journal of Exposure Science &amp; Environmental Epidemiology</em> 31 (3): 442–53. <a href="https://doi.org/10.1038/s41370-021-00318-4">https://doi.org/10.1038/s41370-021-00318-4</a>.
 </div>
 <div id="ref-williamson_co_2007" class="csl-entry">
-Williamson, Paul. 2007. <span>“<span>CO</span> <span>Instruction</span> <span>Manual</span> V2.0 <span>Working</span> <span>Paper</span> 2002/1.”</span> <em>Population Microdata Unit, Dept. Of Geography, University of Liverpool</em>, June.
+Williamson, Paul. 2007. <span>“<span>CO</span> <span>Instruction</span> <span>Manual</span> V2.0 <span>Working</span> <span>Paper</span> 2002/1.”</span> <em>Population Microdata Unit, Dept. Of Geography, University of Liverpool</em>, June. <a href="https://pcwww.liv.ac.uk/~william/microdata/CO%20070615/CO_software.html">https://pcwww.liv.ac.uk/~william/microdata/CO%20070615/CO_software.html</a>.
 </div>
 </div>
             </section>
@@ -338,20 +330,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
