@@ -4,26 +4,25 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Methods | Synthetic population generation for ACRES project</title>
-  <meta name="description" content="This book describes the process and applications of using the CO model to create a parcel-level synthetic population." />
+  <title>Chapter 5 Methods | ACRES Synthetic Population</title>
+  <meta name="description" content="Code and methods for reproducing synthetic population work from ’A Novel Method for Generating Spatially Resolved Synthetic Populations for Health Impact Assessments in Vulnerable Populations`" />
   <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Methods | Synthetic population generation for ACRES project" />
+  <meta property="og:title" content="Chapter 5 Methods | ACRES Synthetic Population" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This book describes the process and applications of using the CO model to create a parcel-level synthetic population." />
+  <meta property="og:description" content="Code and methods for reproducing synthetic population work from ’A Novel Method for Generating Spatially Resolved Synthetic Populations for Health Impact Assessments in Vulnerable Populations`" />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Methods | Synthetic population generation for ACRES project" />
+  <meta name="twitter:title" content="Chapter 5 Methods | ACRES Synthetic Population" />
   
-  <meta name="twitter:description" content="This book describes the process and applications of using the CO model to create a parcel-level synthetic population." />
+  <meta name="twitter:description" content="Code and methods for reproducing synthetic population work from ’A Novel Method for Generating Spatially Resolved Synthetic Populations for Health Impact Assessments in Vulnerable Populations`" />
   
 
-<meta name="author" content="Flannery Black-Ingersoll and Chad Milando" />
 
 
-<meta name="date" content="2025-08-15" />
+<meta name="date" content="2025-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +51,17 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
 
 
 
@@ -98,47 +108,46 @@ div.csl-indent {
 <li><a href="./">ACRES Synthetic Population</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> A Novel Method for Generating Spatially Resolved Synthetic Populations for Health Impact Assessments in Vulnerable Populations</a></li>
+<li class="chapter" data-level="2" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>2</b> Prerequisites</a></li>
+<li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#project-objectives"><i class="fa fa-check"></i><b>2.1</b> Project Objectives</a></li>
-<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#previous-work-from-busph"><i class="fa fa-check"></i><b>2.2</b> Previous work from BUSPH</a></li>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#project-objectives"><i class="fa fa-check"></i><b>3.1</b> Project Objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="intro.html"><a href="intro.html#previous-work-from-busph"><i class="fa fa-check"></i><b>3.2</b> Previous work from BUSPH</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a>
+<li class="chapter" data-level="4" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>4</b> Literature</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="literature.html"><a href="literature.html#popgen"><i class="fa fa-check"></i><b>3.1</b> PopGen</a></li>
-<li class="chapter" data-level="3.2" data-path="literature.html"><a href="literature.html#popsynwin"><i class="fa fa-check"></i><b>3.2</b> PopSynWin</a></li>
-<li class="chapter" data-level="3.3" data-path="literature.html"><a href="literature.html#synthpop-r"><i class="fa fa-check"></i><b>3.3</b> synthpop R</a></li>
-<li class="chapter" data-level="3.4" data-path="literature.html"><a href="literature.html#simpop-r"><i class="fa fa-check"></i><b>3.4</b> simPop R</a></li>
+<li class="chapter" data-level="4.1" data-path="literature.html"><a href="literature.html#popgen"><i class="fa fa-check"></i><b>4.1</b> PopGen</a></li>
+<li class="chapter" data-level="4.2" data-path="literature.html"><a href="literature.html#popsynwin"><i class="fa fa-check"></i><b>4.2</b> PopSynWin</a></li>
+<li class="chapter" data-level="4.3" data-path="literature.html"><a href="literature.html#synthpop-r"><i class="fa fa-check"></i><b>4.3</b> synthpop R</a></li>
+<li class="chapter" data-level="4.4" data-path="literature.html"><a href="literature.html#simpop-r"><i class="fa fa-check"></i><b>4.4</b> simPop R</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
+<li class="chapter" data-level="5" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>5</b> Methods</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#geographic-area"><i class="fa fa-check"></i><b>4.1</b> Geographic area</a></li>
-<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#acs-constraint-tables"><i class="fa fa-check"></i><b>4.2</b> ACS constraint tables</a>
+<li class="chapter" data-level="5.1" data-path="methods.html"><a href="methods.html#geographic-area"><i class="fa fa-check"></i><b>5.1</b> Geographic area</a></li>
+<li class="chapter" data-level="5.2" data-path="methods.html"><a href="methods.html#acs-constraint-tables"><i class="fa fa-check"></i><b>5.2</b> ACS constraint tables</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="methods.html"><a href="methods.html#raceethnicity"><i class="fa fa-check"></i><b>4.2.1</b> Race/Ethnicity</a></li>
-<li class="chapter" data-level="4.2.2" data-path="methods.html"><a href="methods.html#sex-and-age"><i class="fa fa-check"></i><b>4.2.2</b> Sex and Age</a></li>
-<li class="chapter" data-level="4.2.3" data-path="methods.html"><a href="methods.html#education"><i class="fa fa-check"></i><b>4.2.3</b> Education</a></li>
-<li class="chapter" data-level="4.2.4" data-path="methods.html"><a href="methods.html#householder-age-and-household-income"><i class="fa fa-check"></i><b>4.2.4</b> Householder Age and Household Income</a></li>
-<li class="chapter" data-level="4.2.5" data-path="methods.html"><a href="methods.html#householder-age-and-tenure"><i class="fa fa-check"></i><b>4.2.5</b> Householder Age and Tenure</a></li>
+<li class="chapter" data-level="5.2.1" data-path="methods.html"><a href="methods.html#raceethnicity"><i class="fa fa-check"></i><b>5.2.1</b> Race/Ethnicity</a></li>
+<li class="chapter" data-level="5.2.2" data-path="methods.html"><a href="methods.html#sex-and-age"><i class="fa fa-check"></i><b>5.2.2</b> Sex and Age</a></li>
+<li class="chapter" data-level="5.2.3" data-path="methods.html"><a href="methods.html#education"><i class="fa fa-check"></i><b>5.2.3</b> Education</a></li>
+<li class="chapter" data-level="5.2.4" data-path="methods.html"><a href="methods.html#householder-age-and-household-income"><i class="fa fa-check"></i><b>5.2.4</b> Householder Age and Household Income</a></li>
+<li class="chapter" data-level="5.2.5" data-path="methods.html"><a href="methods.html#householder-age-and-tenure"><i class="fa fa-check"></i><b>5.2.5</b> Householder Age and Tenure</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="methods.html"><a href="methods.html#pums-data"><i class="fa fa-check"></i><b>4.3</b> PUMS data</a></li>
-<li class="chapter" data-level="4.4" data-path="methods.html"><a href="methods.html#acs-and-pums-mapping"><i class="fa fa-check"></i><b>4.4</b> ACS and PUMS Mapping</a></li>
-<li class="chapter" data-level="4.5" data-path="methods.html"><a href="methods.html#the-code"><i class="fa fa-check"></i><b>4.5</b> The Code:</a>
+<li class="chapter" data-level="5.3" data-path="methods.html"><a href="methods.html#pums-data"><i class="fa fa-check"></i><b>5.3</b> PUMS data</a></li>
+<li class="chapter" data-level="5.4" data-path="methods.html"><a href="methods.html#acs-and-pums-mapping"><i class="fa fa-check"></i><b>5.4</b> ACS and PUMS Mapping</a></li>
+<li class="chapter" data-level="5.5" data-path="methods.html"><a href="methods.html#the-code"><i class="fa fa-check"></i><b>5.5</b> The Code:</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="methods.html"><a href="methods.html#puma-data"><i class="fa fa-check"></i><b>4.5.1</b> 1. PUMA data</a></li>
-<li class="chapter" data-level="4.5.2" data-path="methods.html"><a href="methods.html#prepare-acs-data-for-co-model"><i class="fa fa-check"></i><b>4.5.2</b> 2. Prepare ACS data for CO model</a></li>
-<li class="chapter" data-level="4.5.3" data-path="methods.html"><a href="methods.html#bring-into-the-co-model"><i class="fa fa-check"></i><b>4.5.3</b> 3. Bring into the CO model</a></li>
-<li class="chapter" data-level="4.5.4" data-path="methods.html"><a href="methods.html#create-parcel-level-synthetic-population"><i class="fa fa-check"></i><b>4.5.4</b> 4. Create parcel-level synthetic population</a></li>
+<li class="chapter" data-level="5.5.1" data-path="methods.html"><a href="methods.html#puma-data"><i class="fa fa-check"></i><b>5.5.1</b> 1. PUMA data</a></li>
+<li class="chapter" data-level="5.5.2" data-path="methods.html"><a href="methods.html#prepare-acs-data-for-co-model"><i class="fa fa-check"></i><b>5.5.2</b> 2. Prepare ACS data for CO model</a></li>
+<li class="chapter" data-level="5.5.3" data-path="methods.html"><a href="methods.html#bring-into-the-co-model"><i class="fa fa-check"></i><b>5.5.3</b> 3. Bring into the CO model</a></li>
+<li class="chapter" data-level="5.5.4" data-path="methods.html"><a href="methods.html#create-parcel-level-synthetic-population"><i class="fa fa-check"></i><b>5.5.4</b> 4. Create parcel-level synthetic population</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>5</b> Application</a>
+<li class="chapter" data-level="6" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>6</b> Application</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="application.html"><a href="application.html#use-case-proximity-to-major-roadway"><i class="fa fa-check"></i><b>5.1</b> Use-case: proximity to major roadway</a></li>
-<li class="chapter" data-level="5.2" data-path="application.html"><a href="application.html#hypothetical-health-impact-assessment"><i class="fa fa-check"></i><b>5.2</b> Hypothetical health impact assessment</a></li>
+<li class="chapter" data-level="6.1" data-path="application.html"><a href="application.html#use-case-proximity-to-major-roadway"><i class="fa fa-check"></i><b>6.1</b> Use-case: proximity to major roadway</a></li>
+<li class="chapter" data-level="6.2" data-path="application.html"><a href="application.html#hypothetical-health-impact-assessment"><i class="fa fa-check"></i><b>6.2</b> Hypothetical health impact assessment</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -151,7 +160,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Synthetic population generation for ACRES project</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">ACRES Synthetic Population</a>
           </h1>
         </div>
 
@@ -159,8 +168,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="methods" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Methods<a href="methods.html#methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="methods" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Methods<a href="methods.html#methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>To generate synthetic populations for each Public Use Microdata Area
 (PUMA) contained within the Mystic River Watershed area, we used a
 combination of coding languages (R version 4.2.2 (2022-10-31) and
@@ -170,7 +179,7 @@ methods is the census tract level.</p>
 <div class="figure"><span style="display:block;" id="fig:methods-image"></span>
 <img src="images/methods-image.png" alt="Using PUMA and ACS to Generate a Synthetic Population" width="700" />
 <p class="caption">
-Figure 4.1: Using PUMA and ACS to Generate a Synthetic Population
+Figure 5.1: Using PUMA and ACS to Generate a Synthetic Population
 </p>
 </div>
 <p><strong>OVERVIEW:</strong></p>
@@ -203,8 +212,8 @@ for that PUMA, and row below (number of constraint cells x 10).</li>
 <p>Run with <strong>CO_BU.exe</strong>, the executable created by compiling Fortran
 code.</p>
 <p>Read the resulting output from the CO work using R.</p>
-<div id="geographic-area" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Geographic area<a href="methods.html#geographic-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="geographic-area" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Geographic area<a href="methods.html#geographic-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are 21 cities and towns included in the Mystic River Watershed
 area:</p>
 <ol style="list-style-type: decimal">
@@ -231,12 +240,12 @@ area:</p>
 <li>Wilmington</li>
 </ol>
 </div>
-<div id="acs-constraint-tables" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> ACS constraint tables<a href="methods.html#acs-constraint-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="acs-constraint-tables" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> ACS constraint tables<a href="methods.html#acs-constraint-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>ACS 5-year (2021) detailed estimates tables for Massachusetts census
 tracts were obtained.</p>
-<div id="raceethnicity" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Race/Ethnicity<a href="methods.html#raceethnicity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="raceethnicity" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Race/Ethnicity<a href="methods.html#raceethnicity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B04006 <a href="https://data.census.gov/table?q=B0400&amp;g=040XX00US25&amp;tid=ACSDT1Y2021.B04006">People Reporting
 Ancestry</a>
@@ -285,7 +294,7 @@ background equals or exceeds 1%. This means different ancestry variables
 were included for different PUMAs. The following table provides the list
 of included ancestries by PUMA.</p>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA01300 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA01300 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 01300 Ancestries &gt;1% of Total Population</th>
@@ -337,7 +346,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA03306 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA03306 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 03306 Ancestries &gt;1% of Total Population</th>
@@ -380,7 +389,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA00505 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA00505 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 00505 Ancestries &gt;1% of Total Population</th>
@@ -441,7 +450,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA03302 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA03302 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 03302 Ancestries &gt;1% of Total Population</th>
@@ -490,7 +499,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA00506 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA00506 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 00506 Ancestries &gt;1% of Total Population</th>
@@ -554,7 +563,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA00507 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA00507 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 00507 Ancestries &gt;1% of Total Population</th>
@@ -609,7 +618,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA00508 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA00508 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 00508 Ancestries &gt;1% of Total Population</th>
@@ -664,7 +673,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA01000 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA01000 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 01000 Ancestries &gt;1% of Total Population</th>
@@ -719,7 +728,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA02800 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA02800 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 02800 Ancestries &gt;1% of Total Population</th>
@@ -771,7 +780,7 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab0">Table 4.1: </span><strong>PUMA00503 Ancestry Mappings</strong></caption>
+<caption><span id="tab:nice-tab0">Table 5.1: </span><strong>PUMA00503 Ancestry Mappings</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">PUMA 00503 Ancestries &gt;1% of Total Population</th>
@@ -826,39 +835,39 @@ of included ancestries by PUMA.</p>
 </tbody>
 </table>
 </div>
-<div id="sex-and-age" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Sex and Age<a href="methods.html#sex-and-age" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="sex-and-age" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Sex and Age<a href="methods.html#sex-and-age" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B01001 <a href="https://data.census.gov/table?q=B01001&amp;g=040XX00US25,25$1400000">Sex by
 Age</a></li>
 </ul>
 </div>
-<div id="education" class="section level3 hasAnchor" number="4.2.3">
-<h3><span class="header-section-number">4.2.3</span> Education<a href="methods.html#education" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="education" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> Education<a href="methods.html#education" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B15001 <a href="https://data.census.gov/table?q=B15001&amp;g=040XX00US25,25$1400000">Sex by educational attainment for the population 18 years
 and
 over</a></li>
 </ul>
 </div>
-<div id="householder-age-and-household-income" class="section level3 hasAnchor" number="4.2.4">
-<h3><span class="header-section-number">4.2.4</span> Householder Age and Household Income<a href="methods.html#householder-age-and-household-income" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="householder-age-and-household-income" class="section level3 hasAnchor" number="5.2.4">
+<h3><span class="header-section-number">5.2.4</span> Householder Age and Household Income<a href="methods.html#householder-age-and-household-income" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B19307 <a href="https://data.census.gov/table?q=B19037&amp;g=040XX00US25,25$1400000">Age of householder by household income in the past 12 months
 (2021 inflation-adjusted
 dollars)</a></li>
 </ul>
 </div>
-<div id="householder-age-and-tenure" class="section level3 hasAnchor" number="4.2.5">
-<h3><span class="header-section-number">4.2.5</span> Householder Age and Tenure<a href="methods.html#householder-age-and-tenure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="householder-age-and-tenure" class="section level3 hasAnchor" number="5.2.5">
+<h3><span class="header-section-number">5.2.5</span> Householder Age and Tenure<a href="methods.html#householder-age-and-tenure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
 <li>B25007 <a href="https://data.census.gov/table?q=B25007&amp;g=040XX00US25,25$1400000">Tenure by Age of
 Householder</a></li>
 </ul>
 </div>
 </div>
-<div id="pums-data" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> PUMS data<a href="methods.html#pums-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pums-data" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> PUMS data<a href="methods.html#pums-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>ACS 5-year (2017-2021) Public Use Microdata Sample (PUMS) files for
 <em>person</em> data and for <em>household</em> data. These data sample approximately
 5% of individual responses to the ACS. Full documentation on this data
@@ -883,7 +892,7 @@ PUMA.</p>
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <table>
-<caption><span id="tab:nice-tab2">Table 4.2: </span><strong>Relevant PUMS Person Variables</strong></caption>
+<caption><span id="tab:nice-tab2">Table 5.2: </span><strong>Relevant PUMS Person Variables</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>
@@ -926,7 +935,7 @@ PUMA.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab2">Table 4.2: </span><strong>Relevant PUMS Household Variables</strong></caption>
+<caption><span id="tab:nice-tab2">Table 5.2: </span><strong>Relevant PUMS Household Variables</strong></caption>
 <thead>
 <tr class="header">
 <th align="left">Variable</th>
@@ -957,8 +966,8 @@ PUMA.</p>
 </tbody>
 </table>
 </div>
-<div id="acs-and-pums-mapping" class="section level2 hasAnchor" number="4.4">
-<h2><span class="header-section-number">4.4</span> ACS and PUMS Mapping<a href="methods.html#acs-and-pums-mapping" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="acs-and-pums-mapping" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> ACS and PUMS Mapping<a href="methods.html#acs-and-pums-mapping" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Because ACS and PUMS variables within tables differ, we create variable
 mappings between the two datasets for each table. Some mappings are more
 complex than others (like Ancestry and Hispanic/Latino(a) tables). All
@@ -972,7 +981,7 @@ at {0, 17, 24, 34, 44, 64, 200} and make a factor variable (1:6).</p>
 use the following mapping to coerce the ACS data into 6 categories that
 will correspond to the PUMS breaks.</p>
 <table>
-<caption><span id="tab:nice-tab3">Table 4.3: </span><strong>B01001 Mapping</strong></caption>
+<caption><span id="tab:nice-tab3">Table 5.3: </span><strong>B01001 Mapping</strong></caption>
 <colgroup>
 <col width="20%" />
 <col width="19%" />
@@ -1115,7 +1124,7 @@ population for the education section of variables by calculating the
 remaining under 18 population (using B01001) and include this as a
 column in the education categories.</p>
 <table>
-<caption><span id="tab:nice-tab4">Table 4.4: </span><strong>B15001 Mapping</strong></caption>
+<caption><span id="tab:nice-tab4">Table 5.4: </span><strong>B15001 Mapping</strong></caption>
 <colgroup>
 <col width="36%" />
 <col width="15%" />
@@ -1272,7 +1281,7 @@ Household Income Mapping. A column of all 0 values is included in the
 ACS inputs to the estimation_constraints.txt data file in order to
 provide mapping to the NAs included in the PUMS data.</p>
 <table>
-<caption><span id="tab:nice-tab5">Table 4.5: </span><strong>B19037 Householder Age Mapping</strong></caption>
+<caption><span id="tab:nice-tab5">Table 5.5: </span><strong>B19037 Householder Age Mapping</strong></caption>
 <colgroup>
 <col width="29%" />
 <col width="16%" />
@@ -1309,7 +1318,7 @@ provide mapping to the NAs included in the PUMS data.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab5">Table 4.5: </span><strong>B19037 Household Income Mapping</strong></caption>
+<caption><span id="tab:nice-tab5">Table 5.5: </span><strong>B19037 Household Income Mapping</strong></caption>
 <colgroup>
 <col width="51%" />
 <col width="11%" />
@@ -1421,7 +1430,7 @@ Household Tenure Mapping. A column of all 0 values is included in the
 ACS inputs to the estimation_constraints.txt data file in order to
 provide mapping to the NAs included in the PUMS data.</p>
 <table>
-<caption><span id="tab:nice-tab6">Table 4.6: </span><strong>B25007 Householder Age Mapping</strong></caption>
+<caption><span id="tab:nice-tab6">Table 5.6: </span><strong>B25007 Householder Age Mapping</strong></caption>
 <colgroup>
 <col width="29%" />
 <col width="16%" />
@@ -1483,7 +1492,7 @@ provide mapping to the NAs included in the PUMS data.</p>
 </tbody>
 </table>
 <table>
-<caption><span id="tab:nice-tab6">Table 4.6: </span><strong>B25007 Household Tenure Mapping</strong></caption>
+<caption><span id="tab:nice-tab6">Table 5.6: </span><strong>B25007 Household Tenure Mapping</strong></caption>
 <colgroup>
 <col width="49%" />
 <col width="11%" />
@@ -1525,8 +1534,8 @@ provide mapping to the NAs included in the PUMS data.</p>
 </tbody>
 </table>
 </div>
-<div id="the-code" class="section level2 hasAnchor" number="4.5">
-<h2><span class="header-section-number">4.5</span> The Code:<a href="methods.html#the-code" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="the-code" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> The Code:<a href="methods.html#the-code" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><em>Attention: Before you begin -</em> clone or download the following GitHub
 Repository: <a href="https://github.com/Flannery-BIng/synth_pop" class="uri">https://github.com/Flannery-BIng/synth_pop</a></p>
 <p>In this repository, you will see two subfolders:</p>
@@ -1538,8 +1547,8 @@ Repository: <a href="https://github.com/Flannery-BIng/synth_pop" class="uri">htt
 within the CO_BU folder. Where possible, we have provided example output
 files and the folder and subfolder structures that will allow you to
 reproduce our code output.</p>
-<div id="puma-data" class="section level3 hasAnchor" number="4.5.1">
-<h3><span class="header-section-number">4.5.1</span> 1. PUMA data<a href="methods.html#puma-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="puma-data" class="section level3 hasAnchor" number="5.5.1">
+<h3><span class="header-section-number">5.5.1</span> 1. PUMA data<a href="methods.html#puma-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Step 1. Download housing and person level PUMA data here:</strong></p>
 <p><a href="https://data.census.gov/app/mdat/ACSPUMS5Y2021" class="uri">https://data.census.gov/app/mdat/ACSPUMS5Y2021</a></p>
 <p><em>Make sure you select the PUMA variables listed above (see section
@@ -1547,8 +1556,8 @@ titled <strong>PUMS data</strong>).</em></p>
 <p><strong>Step 2. Place the PUMA data in a subfolder of the ACRESr project
 directory titled ACS_PUMS</strong></p>
 </div>
-<div id="prepare-acs-data-for-co-model" class="section level3 hasAnchor" number="4.5.2">
-<h3><span class="header-section-number">4.5.2</span> 2. Prepare ACS data for CO model<a href="methods.html#prepare-acs-data-for-co-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="prepare-acs-data-for-co-model" class="section level3 hasAnchor" number="5.5.2">
+<h3><span class="header-section-number">5.5.2</span> 2. Prepare ACS data for CO model<a href="methods.html#prepare-acs-data-for-co-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This section details the R project structure (hereafter referred to as
 ACRESr.proj) implemented prior to running <strong>CO_BU.exe</strong>.<br />
 </p>
@@ -1628,10 +1637,10 @@ convert PUMS to CO.R</strong></li>
 from the ACRESr output folder into CO_BU/Data.</li>
 </ul>
 </div>
-<div id="bring-into-the-co-model" class="section level3 hasAnchor" number="4.5.3">
-<h3><span class="header-section-number">4.5.3</span> 3. Bring into the CO model<a href="methods.html#bring-into-the-co-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="prepare-data" class="section level4 hasAnchor" number="4.5.3.1">
-<h4><span class="header-section-number">4.5.3.1</span> Prepare Data<a href="methods.html#prepare-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="bring-into-the-co-model" class="section level3 hasAnchor" number="5.5.3">
+<h3><span class="header-section-number">5.5.3</span> 3. Bring into the CO model<a href="methods.html#bring-into-the-co-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="prepare-data" class="section level4 hasAnchor" number="5.5.3.1">
+<h4><span class="header-section-number">5.5.3.1</span> Prepare Data<a href="methods.html#prepare-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>As described in the R Code, you should have the following files in
 CO_BU/Data, as listed in CO_filelist.txt (each with the PUMA indicated
 at the end of the file name, except for CO_random_seednumbers.txt as
@@ -1654,8 +1663,8 @@ constraint cells scaled by 10x (line 8).</li>
 <li><p>‘Data/CO_random_seednumbers.txt’</p></li>
 </ol>
 </div>
-<div id="run-co_bu.exe" class="section level4 hasAnchor" number="4.5.3.2">
-<h4><span class="header-section-number">4.5.3.2</span> Run CO_BU.exe<a href="methods.html#run-co_bu.exe" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="run-co_bu.exe" class="section level4 hasAnchor" number="5.5.3.2">
+<h4><span class="header-section-number">5.5.3.2</span> Run CO_BU.exe<a href="methods.html#run-co_bu.exe" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In the terminal, with the directory set to the co-bu-mac folder, run the
 following:</p>
 <ol style="list-style-type: decimal">
@@ -1672,8 +1681,8 @@ explanation.</a></p></li>
 <p>co-bu-mac % ./CO_BU</p></li>
 </ol>
 </div>
-<div id="read-the-output-and-check-error" class="section level4 hasAnchor" number="4.5.3.3">
-<h4><span class="header-section-number">4.5.3.3</span> Read the output and check error<a href="methods.html#read-the-output-and-check-error" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="read-the-output-and-check-error" class="section level4 hasAnchor" number="5.5.3.3">
+<h4><span class="header-section-number">5.5.3.3</span> Read the output and check error<a href="methods.html#read-the-output-and-check-error" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
 <li><p>Run [RESULTS] - Read CO output.R:</p>
 <p>Calls on each of the individual PUMAs and saves the output from the
@@ -1685,14 +1694,14 @@ errors, run this code which pulls all OTAE per household estimates by
 PUMA and produces a boxplot of the distribution of error by PUMA.</p>
 </div>
 </div>
-<div id="create-parcel-level-synthetic-population" class="section level3 hasAnchor" number="4.5.4">
-<h3><span class="header-section-number">4.5.4</span> 4. Create parcel-level synthetic population<a href="methods.html#create-parcel-level-synthetic-population" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="create-parcel-level-synthetic-population" class="section level3 hasAnchor" number="5.5.4">
+<h3><span class="header-section-number">5.5.4</span> 4. Create parcel-level synthetic population<a href="methods.html#create-parcel-level-synthetic-population" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Parcel data can be sourced from state-websites. For Massachusetts, this
 is a shapefile with a range of available variables <span class="citation">(<a href="#ref-massgis_parcels">Geographic Information 2025</a>)</span>.
 Before we can proceed with the matching algorithm, we need to do some
 data preparation.</p>
-<div id="parcel-centroids-and-pumas" class="section level4 hasAnchor" number="4.5.4.1">
-<h4><span class="header-section-number">4.5.4.1</span> Parcel centroids and PUMAs<a href="methods.html#parcel-centroids-and-pumas" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="parcel-centroids-and-pumas" class="section level4 hasAnchor" number="5.5.4.1">
+<h4><span class="header-section-number">5.5.4.1</span> Parcel centroids and PUMAs<a href="methods.html#parcel-centroids-and-pumas" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Find the centroids of parcels (we did this in GIS, could also do this in
 R).</p>
 <p><strong>01 - [SYNTHPOP] - Joining parcels-tracts-pumas.R</strong></p>
@@ -1700,15 +1709,15 @@ R).</p>
 <li>Joins the geometries (tract to PUMA, parcel centroid to tract)</li>
 </ul>
 </div>
-<div id="imputation" class="section level4 hasAnchor" number="4.5.4.2">
-<h4><span class="header-section-number">4.5.4.2</span> Imputation<a href="methods.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="imputation" class="section level4 hasAnchor" number="5.5.4.2">
+<h4><span class="header-section-number">5.5.4.2</span> Imputation<a href="methods.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Conduct any necessary imputation on parcel data and synthetic population
 data. Example code for imputation of synthetic population data is
 available here:</p>
 <p><strong>02 - [SYNTHPOP] - Impute Synthpop.R</strong></p>
 </div>
-<div id="downscale-from-tract-level-to-parcel-level" class="section level4 hasAnchor" number="4.5.4.3">
-<h4><span class="header-section-number">4.5.4.3</span> Downscale from tract-level to parcel-level<a href="methods.html#downscale-from-tract-level-to-parcel-level" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="downscale-from-tract-level-to-parcel-level" class="section level4 hasAnchor" number="5.5.4.3">
+<h4><span class="header-section-number">5.5.4.3</span> Downscale from tract-level to parcel-level<a href="methods.html#downscale-from-tract-level-to-parcel-level" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To downscale further, we need additional data. For this project, we used
 the MassGIS Property Tax Parcels dataset <span class="citation">(<a href="#ref-massgis_parcels">Geographic Information 2025</a>)</span>. The key
 variables used from this dataset for this step were:</p>
@@ -1725,7 +1734,7 @@ code file:</p>
 </div>
 </div>
 </div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-massgis_parcels" class="csl-entry">
 Geographic Information, Massachusetts Bureau of. 2025. <span>“<span>MassGIS</span> <span>Data:</span> <span>Property</span> <span>Tax</span> <span>Parcels</span>.”</span> <a href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels">https://www.mass.gov/info-details/massgis-data-property-tax-parcels</a>.
@@ -1779,7 +1788,7 @@ gitbook.start({
     "link": null,
     "text": null
   },
-  "download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+  "download": ["my-book.pdf", "my-book.epub"],
   "search": {
     "engine": "fuse",
     "options": null

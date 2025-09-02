@@ -1,0 +1,89 @@
+# Introduction {#intro}
+
+## Project Objectives 
+
+**Overall: to develop a highly spatially-resolved synthetic population for application in epidemiological research in 10 Public Use Microdata Areas (first by census tract, then, by parcel).** 
+
+> **1. Use and expand R code from [@milando_2021] to pull and prepare datasets from the American Community Survey (5-year detailed estimates tables) and Public Use Microdata Samples (both from the [United States Census Bureau](https://data.census.gov/)).**
+
+> **2. Adapt Fortran code from [@milando_2021] to run on the Mac M1 chip. Use code to build the combinatorial optimization executable (hereafter referred to as *CO_BU*).**
+
+> **3. Run CO_BU with the inputs from R code constraint tables, and read the resulting estimates, weight, and estimate_fit data from the CO_BU outputs in R.**
+
+>**4. Develop comprehensive documentation of efforts using rBookdown (see document you are currently viewing!).**
+
+>**5. Build an R package that interacts with Fortran and allows others to repeat this process with PUMAs across the United States (this is a bit ambitious).**
+
+>**6. Produce a paper on the methods and provide a case study as an example of the application of this work.**
+
+
+
+## Previous work from BUSPH
+
+
+> **Community-Wide Health Risk Assessment Using Geographically Resolved Demographic Data: A Synthetic Population Approach (Levy, Fabian, & Peters, 2014)** 
+
+Given insufficient geographic resolution in existing datasets on population demographics, this paper models a synthetic population approach using a cumulative risk assessment (which documents risks from multiple agents)[@levy_2014]. 
+
+Three major data inputs are used: 
+
+  - ACS (American Community Survey) 5-year [PUMA (Public Use Microdata Area)](https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html) (Individual Data)
+  - ACS 5-year [Census Tract Data](https://www.census.gov/programs-surveys/acs/data.html) (Constraints)
+  - [BRFSS (Behavioral Risk Factor Surveillance System)](https://www.cdc.gov/brfss/data_documentation/index.htm) (Individual Data) 
+  
+The ACS data inputs are used in the development of the synthetic population, while the BRFSS data input is used for the application of the synthetic population to an epidemiological analysis of predictors of the outcome (in this paper, smoking behavior). 
+
+- The method of forming the synthetic population is *simulated annealing with probabilistic reweighting*:
+  - Select a random subset of households
+  - Compare the demographics of the random sample to the aggregate-level demographics distribution
+  - Replace individual households to see if the fit improves
+  - *Application: CO software package* [@williamson_co_2007] 
+  
+Key limitations: 
+
+  - Underrepresentation of undocumented populations
+  - ACS microdata uses a very small subsample to represent the population of interest
+  
+> **Community-Engaged Modeling of Geographic and Demographic Patterns of Multiple Public Health Risk Factors (Basra, Fabian, Holberger, French, and Levy, 2017)** 
+
+This second publication [@basra_2017] uses the synthetic population created in the article published in 2014. 
+
+  - [BRFSS (Behavioral Risk Factor Surveillance System)](https://www.cdc.gov/brfss/data_documentation/index.htm) data was used to assess several outcomes: BMI, exercise, fruit and vegetable consumption, and diabetes prevalence.
+  - Regression models included: multivariable logistic regression for exercise, fruit and vegetable consumption, and diabetes prevalence; multivariable linear regression for BMI. 
+  
+Key limitations: 
+
+  - ACS variables do not capture the full breadth of exposures predicting these outcomes
+  - Undocumented populations are excluded from census datasets
+  - Limitations of the BRFSS methodology 
+
+
+> **Modeling the impact of exposure reductions using multi-stressor
+epidemiology, exposure models, and synthetic microdata:
+an application to birthweight in two environmental
+justice communities (Milando, Yitshak-Sade, Zanobetti, Levy, Laden, and Fabian, 2020)**
+
+This third publication expands on the synthetic population methods and looks at changes in birthweight distribution as a result of simulated environmental changes [@milando_2021].
+
+Key data inputs:
+
+  - ACS (American Community Survey) 5-year [PUMA (Public Use Microdata Area)](https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html) (Individual Data)
+  - ACS 5-year [Census Tract Data](https://www.census.gov/programs-surveys/acs/data.html) (Constraints)
+  - MA Births [State Data](https://www.mass.gov/doc/2010-report-2/download) (Age, race-adjusted birth rates; probability distributions for gestational age, parity, smoking during pregnancy and goverment support)
+
+- The method of forming the synthetic population is an expansion of the methods applied for the prior two papers, with two rounds of *simulated annealing*:
+  - Simulated annealing with replacement to create a synthetic population for Chelsea and Dorchester
+  - Simulated annealing without replacement, with probability sampling and logistic regression to create synthetic population of women giving birth
+  - In application of the generated synthetic population, this study applies probabilistic and regression modeling to predictions of newborn birthweight outcomes
+  - Used Monte Carlo to introduce uncertainty to predictions of sociobehavioral and clinical risk factors
+  - *Application: CO software package* [@williamson_co_2007] 
+  
+Key limitations: 
+
+  - Same probability given to all possible birthdays
+  - Monte Carlo methods likely don't fully account for uncertainty
+  - Only looked at the census tract level, higher spatial resolution would improve simulation
+  - Challenge of assigning exposure directly rather than estimating via proxy variables
+
+
+
